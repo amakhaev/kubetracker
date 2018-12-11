@@ -15,13 +15,14 @@ import java.awt.event.MouseEvent;
  */
 public class MultiSelectDialog extends JDialog {
 
-    private static final Dimension DIALOG_SIZE = new Dimension(300, 300);
+    private static final Dimension DIALOG_SIZE = new Dimension(400, 500);
     private static final Border DEFAULT_PANEL_BORDER = BorderFactory.createEmptyBorder(10, 10, 10, 10);
     private static final Border DEFAULT_LABEL_BORDER = BorderFactory.createEmptyBorder(10, 0, 10, 0);
 
     private JTextField filterValue;
     private JButton addFilterButton;
     private DefaultListModel<MultiSelectDialogItem> dialogListModel;
+    private JList<MultiSelectDialogItem> dialogItemList;
 
     private MultiSelectDataSource dataSource;
 
@@ -51,8 +52,11 @@ public class MultiSelectDialog extends JDialog {
         this.setContentPane(panel);
         panel.setLayout(new BorderLayout());
 
+        this.dialogItemList = this.createFilterList();
+
         panel.add(this.createNewFilterPanel(), BorderLayout.PAGE_START);
-        panel.add(new JScrollPane(this.createFilterList()), BorderLayout.CENTER);
+        panel.add(new JScrollPane(this.dialogItemList), BorderLayout.CENTER);
+        panel.add(this.createDeleteButton(), BorderLayout.PAGE_END);
     }
 
     private JPanel createNewFilterPanel() {
@@ -81,7 +85,7 @@ public class MultiSelectDialog extends JDialog {
 
     private JTextField createFilterValueField() {
         JTextField filterTextFiled = new JTextField();
-        filterTextFiled.setPreferredSize(new Dimension(200, 30));
+        filterTextFiled.setPreferredSize(new Dimension(300, 30));
         filterTextFiled.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent documentEvent) {
@@ -148,5 +152,24 @@ public class MultiSelectDialog extends JDialog {
         JList<MultiSelectDialogItem> list = new JList<>(this.dialogListModel);
         list.setCellRenderer(new DialogItemRenderer());
         return list;
+    }
+
+    private JButton createDeleteButton() {
+        JButton deleteButton = new JButton(LocalizationUtils.getString("delete"));
+        deleteButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent mouseEvent) {
+                super.mouseClicked(mouseEvent);
+                if (dialogItemList.getSelectedValuesList() == null || dialogItemList.getSelectedValuesList().size() == 0) {
+                    return;
+                }
+
+                dialogItemList.getSelectedValuesList().forEach(selected -> dataSource.delete(selected.getId()));
+                dialogListModel.clear();
+                dataSource.getFilters().forEach(dialogListModel::addElement);
+            }
+        });
+
+        return deleteButton;
     }
 }

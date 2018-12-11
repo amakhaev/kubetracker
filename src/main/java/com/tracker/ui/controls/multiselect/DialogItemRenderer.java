@@ -1,8 +1,5 @@
 package com.tracker.ui.controls.multiselect;
 
-import com.tracker.utils.ImageUtility;
-import com.tracker.utils.ResourceHelper;
-
 import javax.swing.*;
 import java.awt.*;
 
