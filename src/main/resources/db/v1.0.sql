@@ -8,7 +8,9 @@ CREATE TABLE IF NOT EXISTS settings (
 INSERT INTO settings (full_name, short_name, password)
     SELECT 'default', 'default', 'default' WHERE (SELECT count(*) FROM settings) = 0;
 
-CREATE TABLE IF NOT EXISTS pod_filters (
+CREATE TABLE IF NOT EXISTS filters (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  filter_value NOT NULL UNIQUE
+  filter_value NOT NULL UNIQUE,
+  entity_type NOT NULL
 );
+

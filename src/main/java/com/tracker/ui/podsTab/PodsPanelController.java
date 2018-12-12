@@ -1,7 +1,8 @@
 package com.tracker.ui.podsTab;
 
-import com.tracker.domain.podFilter.PodFilterModel;
-import com.tracker.domain.podFilter.PodFilterService;
+import com.tracker.domain.filter.FilterModel;
+import com.tracker.domain.filter.FilterService;
+import com.tracker.domain.filter.FilterType;
 import com.tracker.domain.token.TokenService;
 import com.tracker.kube.PodsService;
 import io.fabric8.kubernetes.api.model.Pod;
@@ -22,7 +23,7 @@ class PodsPanelController {
 
     private PodsService podsService;
     private TokenService tokenService;
-    private PodFilterService podFilterService;
+    private FilterService filterService;
 
     /**
      * Initialize new instance of {@link PodsPanelController}
@@ -30,7 +31,7 @@ class PodsPanelController {
     PodsPanelController() {
         this.podsService = PodsService.INSTANCE;
         this.tokenService = TokenService.INSTANCE;
-        this.podFilterService = PodFilterService.INSTANCE;
+        this.filterService = FilterService.INSTANCE;
     }
 
     /**
@@ -69,7 +70,7 @@ class PodsPanelController {
             return pods;
         }
 
-        List<PodFilterModel> filters = this.podFilterService.getFilters();
+        List<FilterModel> filters = this.filterService.getFilters(FilterType.POD);
         if (filters == null || filters.isEmpty()) {
             return pods;
         }

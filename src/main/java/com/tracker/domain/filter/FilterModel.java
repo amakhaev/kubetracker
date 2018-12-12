@@ -1,4 +1,4 @@
-package com.tracker.domain.podFilter;
+package com.tracker.domain.filter;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,9 +8,10 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class PodFilterModel {
+public class FilterModel {
 
     private int id;
     private String filterValue;
+    private FilterType filterType;
 
 }

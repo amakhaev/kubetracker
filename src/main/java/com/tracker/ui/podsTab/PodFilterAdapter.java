@@ -1,7 +1,8 @@
 package com.tracker.ui.podsTab;
 
-import com.tracker.domain.podFilter.PodFilterModel;
-import com.tracker.domain.podFilter.PodFilterService;
+import com.tracker.domain.filter.FilterModel;
+import com.tracker.domain.filter.FilterService;
+import com.tracker.domain.filter.FilterType;
 import com.tracker.ui.controls.multiselect.MultiSelectDataSource;
 import com.tracker.ui.controls.multiselect.MultiSelectDialogItem;
 
@@ -13,13 +14,13 @@ import java.util.stream.Collectors;
  */
 public class PodFilterAdapter implements MultiSelectDataSource {
 
-    private PodFilterService filterService;
+    private FilterService filterService;
 
     /**
      * Initialize new instance of {@link PodFilterAdapter}
      */
     public PodFilterAdapter() {
-        this.filterService = PodFilterService.INSTANCE;
+        this.filterService = FilterService.INSTANCE;
     }
 
     /**
@@ -29,9 +30,10 @@ public class PodFilterAdapter implements MultiSelectDataSource {
      */
     @Override
     public void create(String filter) {
-        PodFilterModel podFilterModel = new PodFilterModel();
-        podFilterModel.setFilterValue(filter);
-        this.filterService.createOrUpdate(podFilterModel);
+        FilterModel filterModel = new FilterModel();
+        filterModel.setFilterValue(filter);
+        filterModel.setFilterType(FilterType.POD);
+        this.filterService.createOrUpdate(filterModel);
     }
 
     /**
@@ -51,7 +53,7 @@ public class PodFilterAdapter implements MultiSelectDataSource {
      */
     @Override
     public List<MultiSelectDialogItem> getFilters() {
-        return this.filterService.getFilters()
+        return this.filterService.getFilters(FilterType.POD)
                 .stream()
                 .map(podFilter -> new MultiSelectDialogItem(podFilter.getId(), podFilter.getFilterValue()))
                 .collect(Collectors.toList());
@@ -65,6 +67,6 @@ public class PodFilterAdapter implements MultiSelectDataSource {
      */
     @Override
     public boolean isFilterExists(String filterValue) {
-        return this.filterService.isFilterExists(filterValue);
+        return this.filterService.isFilterExists(filterValue, FilterType.POD);
     }
 }

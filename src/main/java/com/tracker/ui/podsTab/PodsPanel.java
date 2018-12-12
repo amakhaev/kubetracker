@@ -1,5 +1,6 @@
 package com.tracker.ui.podsTab;
 
+import com.tracker.ui.controls.linkLabel.LinkLabel;
 import com.tracker.utils.LocalizationUtils;
 import io.fabric8.kubernetes.api.model.PodList;
 import lombok.Setter;
@@ -82,11 +83,11 @@ public class PodsPanel extends JPanel {
         this.lastRefreshLabel.setPreferredSize(new Dimension(150, 30));
 
         Cursor filterButtonCursor = new Cursor(Cursor.HAND_CURSOR);
-        JLabel filterButton = new JLabel(LocalizationUtils.getString("manage_filter"));
-        filterButton.setAlignmentX(Component.LEFT_ALIGNMENT);
-        filterButton.setCursor(filterButtonCursor);
-        filterButton.setForeground(Color.GRAY);
-        filterButton.addMouseListener(new MouseAdapter() {
+        JLabel podFilterButton = new LinkLabel(LocalizationUtils.getString("manage_filter"));
+        podFilterButton.setAlignmentX(Component.LEFT_ALIGNMENT);
+        podFilterButton.setCursor(filterButtonCursor);
+        podFilterButton.setForeground(Color.GRAY);
+        podFilterButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
                 super.mouseClicked(mouseEvent);
@@ -97,7 +98,7 @@ public class PodsPanel extends JPanel {
         });
 
         panel.add(this.lastRefreshLabel);
-        panel.add(filterButton);
+        panel.add(podFilterButton);
 
         return panel;
     }

@@ -1,4 +1,4 @@
-package com.tracker.domain.podFilter;
+package com.tracker.domain.filter;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -7,29 +7,29 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Provides the implementation of {@link PodFilterService}
+ * Provides the implementation of {@link FilterService}
  */
 @Slf4j
-public class PodFilterServiceImpl implements PodFilterService {
+public class FilterServiceImpl implements FilterService {
 
-    private PodFilterDao filterDao;
-    private PodFilterMapper mapper;
+    private FilterDao filterDao;
+    private FilterMapper mapper;
 
     /**
-     * Initialize new instance of {@link PodFilterServiceImpl}
+     * Initialize new instance of {@link FilterServiceImpl}
      */
-    PodFilterServiceImpl() {
-        this.filterDao = new PodFilterDao();
-        this.mapper = PodFilterMapper.INSTANCE;
+    FilterServiceImpl() {
+        this.filterDao = new FilterDao();
+        this.mapper = FilterMapper.INSTANCE;
     }
 
     /**
      * Gets the list of filters for pods
      */
     @Override
-    public List<PodFilterModel> getFilters() {
+    public List<FilterModel> getFilters(FilterType filterType) {
         try {
-            return this.mapper.entitiesToModels(this.filterDao.getFilters());
+            return this.mapper.entitiesToModels(this.filterDao.getFilters(filterType));
         } catch (SQLException e) {
             log.error(e.getMessage());
             return Collections.emptyList();
@@ -43,9 +43,9 @@ public class PodFilterServiceImpl implements PodFilterService {
      * @return true when pod filter with given value already present in database, false otherwise
      */
     @Override
-    public boolean isFilterExists(String filterValue) {
+    public boolean isFilterExists(String filterValue, FilterType filterType) {
         try {
-            return this.filterDao.findByFilterValue(filterValue) != null;
+            return this.filterDao.findByFilterValue(filterValue, filterType) != null;
         } catch (SQLException e) {
             log.error(e.getMessage());
             return false;
@@ -58,7 +58,7 @@ public class PodFilterServiceImpl implements PodFilterService {
      * @param filter - the filter to create or update
      */
     @Override
-    public void createOrUpdate(PodFilterModel filter) {
+    public void createOrUpdate(FilterModel filter) {
         try {
             this.filterDao.createOrUpdateFilter(this.mapper.modelToEntity(filter));
         } catch (SQLException e) {

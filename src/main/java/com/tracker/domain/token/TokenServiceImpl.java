@@ -38,28 +38,28 @@ public class TokenServiceImpl implements TokenService {
     public TokenModel getToken() {
         SettingModel settingModel = SettingService.INSTANCE.getSettings();
 
-        return this.isNeedToRefresh() ?
-                this.makeTokenRequest(
-                        ResourceHelper.getProperty("auth_url"),
-                        settingModel.getFullName(),
-                        settingModel.getPassword()
-                ) :
-                this.tokenModel;
+        if (this.tokenModel == null) {
+            return this.makeTokenRequest(settingModel);
+        } else if (this.isNeedToRefresh()) {
+            return this.makeRefreshTokenRequest(settingModel, this.tokenModel.getRefreshToken());
+        } else {
+            return this.tokenModel;
+        }
     }
 
-    private TokenModel makeTokenRequest(String url, String userName, String password) {
+    private TokenModel makeTokenRequest(SettingModel setting) {
 
         try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
             log.debug("Try to retrieve token");
 
-            HttpPost request = new HttpPost(url);
+            HttpPost request = new HttpPost(ResourceHelper.getProperty("auth_url"));
 
             List<NameValuePair> postParameters = new ArrayList<>();
             postParameters.add(new BasicNameValuePair("grant_type", "password"));
             postParameters.add(new BasicNameValuePair("client_id", ResourceHelper.getProperty("client_id")));
             postParameters.add(new BasicNameValuePair("client_secret", ResourceHelper.getProperty("client_secret")));
-            postParameters.add(new BasicNameValuePair("username", userName));
-            postParameters.add(new BasicNameValuePair("password", password));
+            postParameters.add(new BasicNameValuePair("username", setting.getFullName()));
+            postParameters.add(new BasicNameValuePair("password", setting.getPassword()));
             postParameters.add(new BasicNameValuePair("scope", "openid"));
             postParameters.add(new BasicNameValuePair("response_type", "id_token"));
 
@@ -72,6 +72,47 @@ public class TokenServiceImpl implements TokenService {
                 log.info("Token retrieved successfully");
             } else {
                 log.error("Token retrieved with error. Response: ");
+                log.error(json);
+            }
+            this.tokenModel = GsonUtility.parse(json, TokenModel.class);
+            this.tokenLastUpdate = LocalTime.now();
+            return this.tokenModel;
+
+        } catch (IOException ex) {
+            log.error(ex.getMessage());
+            return null;
+        }
+    }
+
+    private TokenModel makeRefreshTokenRequest(SettingModel setting, String refreshToken) {
+        if (refreshToken == null || refreshToken.isEmpty()) {
+            return this.makeTokenRequest(setting);
+        }
+
+        try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
+            log.debug("Try to refresh token");
+
+            HttpPost request = new HttpPost(ResourceHelper.getProperty("auth_url"));
+
+            List<NameValuePair> postParameters = new ArrayList<>();
+            postParameters.add(new BasicNameValuePair("grant_type", "refresh_token"));
+            postParameters.add(new BasicNameValuePair("client_id", ResourceHelper.getProperty("client_id")));
+            postParameters.add(new BasicNameValuePair("client_secret", ResourceHelper.getProperty("client_secret")));
+            postParameters.add(new BasicNameValuePair("scope", "openid"));
+            postParameters.add(new BasicNameValuePair("refresh_token", refreshToken));
+
+            request.setEntity(new UrlEncodedFormEntity(postParameters, "UTF-8"));
+
+            HttpResponse result = httpClient.execute(request);
+            String json = EntityUtils.toString(result.getEntity(), "UTF-8");
+
+            if (result.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+                log.info("Token refreshed successfully");
+            } else if (result.getStatusLine().getStatusCode() == HttpStatus.SC_UNAUTHORIZED) {
+                log.debug("Can't refresh token. Try to re-login");
+                return this.makeTokenRequest(setting);
+            } else {
+                log.error("Token refreshed with error. Response: ");
                 log.error(json);
             }
             this.tokenModel = GsonUtility.parse(json, TokenModel.class);
