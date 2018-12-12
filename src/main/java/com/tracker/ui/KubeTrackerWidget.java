@@ -8,6 +8,7 @@ import com.tracker.utils.EnvironmentUtils;
 import com.tracker.utils.LocalizationUtils;
 import com.tracker.utils.ResourceHelper;
 import lombok.extern.slf4j.Slf4j;
+import rx.Observable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -45,18 +46,20 @@ public class KubeTrackerWidget {
      * Initializes the widget
      */
     public void initialize() {
-        this.podsPanel.initialize();
-        this.settingDialog = new SettingDialog(
-                this.frame,
-                LocalizationUtils.getString("settings"),
-                () -> this.podsPanel.updateList()
-        );
+        SwingUtilities.invokeLater(() -> {
+            this.podsPanel.initialize();
+            this.settingDialog = new SettingDialog(
+                    this.frame,
+                    LocalizationUtils.getString("settings"),
+                    () -> this.podsPanel.updateAll()
+            );
 
-        this.multiSelectDialog = new MultiSelectDialog(
-                this.frame,
-                LocalizationUtils.getString("filter"),
-                new PodFilterAdapter()
-        );
+            this.multiSelectDialog = new MultiSelectDialog(
+                    this.frame,
+                    LocalizationUtils.getString("filter"),
+                    new PodFilterAdapter()
+            );
+        });
     }
 
     /**
@@ -100,7 +103,7 @@ public class KubeTrackerWidget {
         this.trayIcon = new TrayIcon(this.currentIcon, LocalizationUtils.getString("kube_tracker"));
         this.trayIcon.setImageAutoSize(true);
 
-        trayIcon.addMouseListener(new MouseAdapter() {
+        this.trayIcon.addMouseListener(new MouseAdapter() {
 
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
@@ -114,9 +117,9 @@ public class KubeTrackerWidget {
         });
 
         try {
-            tray.add(trayIcon);
+            tray.add(this.trayIcon);
         } catch (AWTException e) {
-            System.out.println("TrayIcon could not be added.");
+            log.error("TrayIcon could not be added.");
         }
     }
 
@@ -167,6 +170,7 @@ public class KubeTrackerWidget {
 
         tabPane.addTab(LocalizationUtils.getString("pods"), this.podsPanel);
         tabPane.addTab(LocalizationUtils.getString("db"), databasePanel);
+
         return tabPane;
     }
 

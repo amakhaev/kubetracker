@@ -18,6 +18,17 @@ class PodsServiceImpl implements PodsService {
     private Config kubeClientConfig;
 
     /**
+     * Initialize new instance of {@link PodsServiceImpl}
+     */
+    PodsServiceImpl(String namespace) {
+        this.kubeClientConfig = new ConfigBuilder()
+                .withMasterUrl(ResourceHelper.getProperty("master_url"))
+                .withTrustCerts(true)
+                .withNamespace(namespace)
+                .build();
+    }
+
+    /**
      * Gets the pod list by given token
      *
      * @param tokenModel - the token to retrieve
@@ -30,14 +41,6 @@ class PodsServiceImpl implements PodsService {
         }
 
         try {
-            if (this.kubeClientConfig == null) {
-                this.kubeClientConfig = new ConfigBuilder()
-                        .withMasterUrl(ResourceHelper.getProperty("master_url"))
-                        .withTrustCerts(true)
-                        .withNamespace("dev")
-                        .build();
-            }
-
             this.kubeClientConfig.setOauthToken(tokenModel.getAccessToken());
             final KubernetesClient client = new DefaultKubernetesClient(this.kubeClientConfig);
             return client.pods().list();

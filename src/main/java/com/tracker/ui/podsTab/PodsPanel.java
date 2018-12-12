@@ -2,7 +2,6 @@ package com.tracker.ui.podsTab;
 
 import com.tracker.ui.controls.linkLabel.LinkLabel;
 import com.tracker.utils.LocalizationUtils;
-import io.fabric8.kubernetes.api.model.PodList;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -10,9 +9,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
 /**
@@ -21,10 +17,13 @@ import java.util.function.Function;
 @Slf4j
 public class PodsPanel extends JPanel {
 
-    private PodsPanelController controller;
-    private PodTableModel podTableModel;
-    private JLabel lastRefreshLabel;
-    private LocalDateTime lastRefreshDate;
+    private static final Color RED = new Color(224,125,125);
+    private static final Color GREEN = new Color(180,229,181);
+
+    private boolean isAnyTabHasError;
+    private JTabbedPane tabPane;
+    private EnvironmentTabPanel devTabPanel;
+    private EnvironmentTabPanel qaTabPanel;
 
     @Setter
     private Function<Boolean, Void> onUpdateWidget;
@@ -36,40 +35,27 @@ public class PodsPanel extends JPanel {
      * Initialize new instance of {@link PodsPanel}
      */
     public PodsPanel() {
-        this.controller = new PodsPanelController();
+        this.setLayout(new BorderLayout());
+        this.isAnyTabHasError = false;
+
+        this.add(new JScrollPane(this.createControlPanel()), BorderLayout.LINE_START);
+        this.add(this.createTabPanel(), BorderLayout.CENTER);
     }
 
     /**
      * Initialize the panel
      */
     public void initialize() {
-        this.setLayout(new BorderLayout());
-
-        this.add(new JScrollPane(this.createControlPanel()), BorderLayout.LINE_START);
-        this.add(new JScrollPane(this.createPodsTable()), BorderLayout.CENTER);
-
-        this.initializeUpdatingLastRefreshField();
-        this.runScheduledRefreshing();
+        this.devTabPanel.initialize();
+        this.qaTabPanel.initialize();
+        this.checkStatusesAllTabs();
     }
 
     /**
      * Updates the list of pods
      */
-    public void updateList() {
-        this.controller.getPods().subscribe(
-                this::refreshList,
-                e -> {
-                    this.refreshList(new PodList());
-                    log.error(e.getMessage());
-                }
-        );
-    }
-
-    private JTable createPodsTable() {
-        this.podTableModel = new PodTableModel();
-        this.updateList();
-
-        return new PodTable(this.podTableModel);
+    public void updateAll() {
+        this.devTabPanel.updateList();
     }
 
     private JPanel createControlPanel() {
@@ -77,16 +63,13 @@ public class PodsPanel extends JPanel {
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
-        this.lastRefreshLabel = new JLabel();
-        this.lastRefreshLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
-        this.lastRefreshLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        this.lastRefreshLabel.setPreferredSize(new Dimension(150, 30));
-
         Cursor filterButtonCursor = new Cursor(Cursor.HAND_CURSOR);
         JLabel podFilterButton = new LinkLabel(LocalizationUtils.getString("manage_filter"));
+
         podFilterButton.setAlignmentX(Component.LEFT_ALIGNMENT);
         podFilterButton.setCursor(filterButtonCursor);
         podFilterButton.setForeground(Color.GRAY);
+        podFilterButton.setPreferredSize(new Dimension(150, 30));
         podFilterButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
@@ -97,51 +80,41 @@ public class PodsPanel extends JPanel {
             }
         });
 
-        panel.add(this.lastRefreshLabel);
         panel.add(podFilterButton);
 
         return panel;
     }
 
-    private void runScheduledRefreshing() {
-        this.controller.scheduleRefreshPods().subscribe(this::refreshList);
+    private JTabbedPane createTabPanel() {
+        this.tabPane = new JTabbedPane();
+
+        this.devTabPanel = this.createTab("dev");
+        this.qaTabPanel = this.createTab("qa");
+
+        this.tabPane.addTab(LocalizationUtils.getString("dev"), this.devTabPanel);
+        this.tabPane.addTab(LocalizationUtils.getString("qa"), this.qaTabPanel);
+
+        return this.tabPane;
     }
 
-    private boolean anyPodHasErrors(PodList pods) {
-        if (pods == null || pods.getItems().isEmpty()) {
-            return false;
+    private EnvironmentTabPanel createTab(String namespace) {
+        EnvironmentTabPanel tabPanel = new EnvironmentTabPanel(namespace);
+        tabPanel.setOnStatusChanged(this::checkStatusesAllTabs);
+        return tabPanel;
+    }
+
+    private void checkStatusesAllTabs() {
+        boolean hasError = this.devTabPanel.isAnyPodHasError() || this.qaTabPanel.isAnyPodHasError();
+
+        this.tabPane.setBackgroundAt(0, this.devTabPanel.isAnyPodHasError() ? RED : GREEN);
+        this.tabPane.setBackgroundAt(1, this.qaTabPanel.isAnyPodHasError() ? RED : GREEN);
+
+        if (this.isAnyTabHasError != hasError) {
+            this.isAnyTabHasError = hasError;
+
+            if (this.onUpdateWidget != null) {
+                this.onUpdateWidget.apply(this.isAnyTabHasError);
+            }
         }
-
-        return pods.getItems().stream().anyMatch(
-                pod -> pod.getStatus() != null &&
-                        pod.getStatus().getContainerStatuses() != null &&
-                        !pod.getStatus().getContainerStatuses().isEmpty() &&
-                        !pod.getStatus().getContainerStatuses().get(0).getReady()
-        );
-    }
-
-    private void refreshList(PodList pods) {
-        this.podTableModel.setPods(pods);
-        this.podTableModel.fireTableDataChanged();
-        this.lastRefreshDate = LocalDateTime.now();
-        if (this.onUpdateWidget != null) {
-            this.onUpdateWidget.apply(this.anyPodHasErrors(pods));
-        }
-    }
-
-    private void updateLastRefreshLabel() {
-        if (this.lastRefreshDate != null) {
-            this.lastRefreshLabel.setText(
-                    String.format(
-                            LocalizationUtils.getString("last_refresh"),
-                            ChronoUnit.SECONDS.between(this.lastRefreshDate, LocalDateTime.now())
-                    )
-            );
-        }
-    }
-
-    private void initializeUpdatingLastRefreshField() {
-        rx.Observable.interval(1, TimeUnit.SECONDS)
-                .subscribe((aVoid) -> this.updateLastRefreshLabel());
     }
 }

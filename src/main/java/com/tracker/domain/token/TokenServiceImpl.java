@@ -35,7 +35,7 @@ public class TokenServiceImpl implements TokenService {
      * Gets the token model
      */
     @Override
-    public TokenModel getToken() {
+    public synchronized TokenModel getToken() {
         SettingModel settingModel = SettingService.INSTANCE.getSettings();
 
         if (this.tokenModel == null) {

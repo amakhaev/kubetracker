@@ -9,9 +9,14 @@ import io.fabric8.kubernetes.api.model.PodList;
 public interface PodsService {
 
     /**
-     * Provides the base implementation of pods service
+     * Gets the base implementation of pods service
+     *
+     * @param namespace - the namespace where pod stored
+     * @return the {@link PodsService} instance
      */
-    PodsService INSTANCE = new PodsServiceImpl();
+    static PodsService getInstance(String namespace) {
+        return new PodsServiceImpl(namespace);
+    }
 
     /**
      * Gets the pod list by given token

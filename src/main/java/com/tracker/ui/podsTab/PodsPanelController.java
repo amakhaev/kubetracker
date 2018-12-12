@@ -21,17 +21,19 @@ import java.util.stream.Collectors;
 @Slf4j
 class PodsPanelController {
 
-    private PodsService podsService;
-    private TokenService tokenService;
-    private FilterService filterService;
+    private final String namespace;
+    private final PodsService podsService;
+    private final TokenService tokenService;
+    private final FilterService filterService;
 
     /**
      * Initialize new instance of {@link PodsPanelController}
      */
-    PodsPanelController() {
-        this.podsService = PodsService.INSTANCE;
+    PodsPanelController(String namespace) {
+        this.podsService = PodsService.getInstance(namespace);
         this.tokenService = TokenService.INSTANCE;
         this.filterService = FilterService.INSTANCE;
+        this.namespace = namespace;
     }
 
     /**
@@ -53,14 +55,14 @@ class PodsPanelController {
     }
 
     private PodList retrievePods() {
-        log.info("Retrieve pods");
+        log.debug("Namespace: {}, Retrieve pods", this.namespace);
         try {
             PodList podList = this.podsService.getPods(this.tokenService.getToken());
             podList.setItems(this.applyFilters(podList.getItems()));
-            log.info("Pods successfully retrieved. Count: " + podList.getItems().size());
+            log.debug("Namespace: {}, Pods successfully retrieved. Count: {}", this.namespace, podList.getItems().size());
             return podList;
         } catch (Exception e) {
-            log.error("Can't retrieve pods: " + e.getMessage());
+            log.error("Namespace: {},  Can't retrieve pods: {}", this.namespace, e.getMessage());
             return new PodList();
         }
     }
