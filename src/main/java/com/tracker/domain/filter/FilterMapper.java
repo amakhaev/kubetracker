@@ -1,4 +1,4 @@
-package com.tracker.domain.podFilter;
+package com.tracker.domain.filter;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
@@ -9,9 +9,9 @@ import java.util.List;
  * Provides the mapper for filter of pod
  */
 @Mapper
-public interface PodFilterMapper {
+public interface FilterMapper {
 
-    PodFilterMapper INSTANCE = Mappers.getMapper(PodFilterMapper.class);
+    FilterMapper INSTANCE = Mappers.getMapper(FilterMapper.class);
 
     /**
      * Converts the entity to model.
@@ -19,7 +19,7 @@ public interface PodFilterMapper {
      * @param entity - the entity to convert.
      * @return the Model instance.
      */
-    PodFilterModel entityToModel(PodFilterEntity entity);
+    FilterModel entityToModel(FilterEntity entity);
 
     /**
      * Converts the model to entity.
@@ -27,7 +27,7 @@ public interface PodFilterMapper {
      * @param model - the model to convert.
      * @return the Entity instance.
      */
-    PodFilterEntity modelToEntity(PodFilterModel model);
+    FilterEntity modelToEntity(FilterModel model);
 
     /**
      * Converts the entities to models.
@@ -35,7 +35,7 @@ public interface PodFilterMapper {
      * @param entities - the entities to convert
      * @return the List<Model> instance
      */
-    List<PodFilterModel> entitiesToModels(List<PodFilterEntity> entities);
+    List<FilterModel> entitiesToModels(List<FilterEntity> entities);
 
     /**
      * Converts the models to entities.
@@ -43,5 +43,5 @@ public interface PodFilterMapper {
      * @param models - the models to convert
      * @return the List<Entity> instance
      */
-    List<PodFilterEntity> modelsToEntities(List<PodFilterModel> models);
+    List<FilterEntity> modelsToEntities(List<FilterModel> models);
 }
