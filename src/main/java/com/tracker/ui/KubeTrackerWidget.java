@@ -147,7 +147,20 @@ public class KubeTrackerWidget {
 
         fileMenu.add(settingItem);
         fileMenu.add(exitItem);
+
+        JMenu viewMenu = new JMenu(LocalizationUtils.getString("view"));
+        JMenuItem filterItem = new JMenuItem();
+        filterItem.setAction(new AbstractAction(LocalizationUtils.getString("manage_filter")) {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                multiSelectDialog.pack();
+                multiSelectDialog.showDialog();
+            }
+        });
+        viewMenu.add(filterItem);
+
         menu.add(fileMenu);
+        menu.add(viewMenu);
         return menu;
     }
 
@@ -161,11 +174,6 @@ public class KubeTrackerWidget {
         this.podsPanel.setOnUpdateWidget(hasError -> {
             refreshIcons(hasError);
             return null;
-        });
-
-        this.podsPanel.setOnFilterChanged(() -> {
-            multiSelectDialog.pack();
-            multiSelectDialog.showDialog();
         });
 
         tabPane.addTab(LocalizationUtils.getString("pods"), this.podsPanel);

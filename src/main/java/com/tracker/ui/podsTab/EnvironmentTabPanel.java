@@ -42,7 +42,7 @@ class EnvironmentTabPanel extends JPanel {
     public void initialize() {
         this.setLayout(new BorderLayout());
 
-        this.add(this.createStatusPanel(), BorderLayout.PAGE_END);
+        this.add(this.createStatusPanel(), BorderLayout.PAGE_START);
         this.add(new JScrollPane(this.createPodsTable()), BorderLayout.CENTER);
 
         this.initializeUpdatingLastRefreshField();

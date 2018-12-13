@@ -1,14 +1,11 @@
 package com.tracker.ui.podsTab;
 
-import com.tracker.ui.controls.linkLabel.LinkLabel;
 import com.tracker.utils.LocalizationUtils;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.function.Function;
 
 /**
@@ -28,9 +25,6 @@ public class PodsPanel extends JPanel {
     @Setter
     private Function<Boolean, Void> onUpdateWidget;
 
-    @Setter
-    private Runnable onFilterChanged;
-
     /**
      * Initialize new instance of {@link PodsPanel}
      */
@@ -38,7 +32,6 @@ public class PodsPanel extends JPanel {
         this.setLayout(new BorderLayout());
         this.isAnyTabHasError = false;
 
-        this.add(new JScrollPane(this.createControlPanel()), BorderLayout.LINE_START);
         this.add(this.createTabPanel(), BorderLayout.CENTER);
     }
 
@@ -58,35 +51,9 @@ public class PodsPanel extends JPanel {
         this.devTabPanel.updateList();
     }
 
-    private JPanel createControlPanel() {
-        JPanel panel = new JPanel();
-        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-
-        Cursor filterButtonCursor = new Cursor(Cursor.HAND_CURSOR);
-        JLabel podFilterButton = new LinkLabel(LocalizationUtils.getString("manage_filter"));
-
-        podFilterButton.setAlignmentX(Component.LEFT_ALIGNMENT);
-        podFilterButton.setCursor(filterButtonCursor);
-        podFilterButton.setForeground(Color.GRAY);
-        podFilterButton.setPreferredSize(new Dimension(150, 30));
-        podFilterButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent mouseEvent) {
-                super.mouseClicked(mouseEvent);
-                if (onFilterChanged != null) {
-                    onFilterChanged.run();
-                }
-            }
-        });
-
-        panel.add(podFilterButton);
-
-        return panel;
-    }
-
     private JTabbedPane createTabPanel() {
         this.tabPane = new JTabbedPane();
+        this.tabPane.setTabPlacement(JTabbedPane.BOTTOM);
 
         this.devTabPanel = this.createTab("dev");
         this.qaTabPanel = this.createTab("qa");
