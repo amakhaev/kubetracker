@@ -1,5 +1,6 @@
 package com.tracker.ui.podsTab;
 
+import com.tracker.ui.PodsController;
 import com.tracker.utils.LocalizationUtils;
 import io.fabric8.kubernetes.api.model.PodList;
 import lombok.Getter;
@@ -18,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 class EnvironmentTabPanel extends JPanel {
 
-    private PodsPanelController controller;
+    private PodsController controller;
     private PodTableModel podTableModel;
     private JLabel lastRefreshLabel;
     private LocalDateTime lastRefreshDate;
@@ -33,7 +34,7 @@ class EnvironmentTabPanel extends JPanel {
      * Initialize new instance of {@link EnvironmentTabPanel}
      */
     EnvironmentTabPanel(String namespace) {
-        this.controller = new PodsPanelController(namespace);
+        this.controller = PodsController.getInstance(namespace);
     }
 
     /**
@@ -42,7 +43,7 @@ class EnvironmentTabPanel extends JPanel {
     public void initialize() {
         this.setLayout(new BorderLayout());
 
-        this.add(this.createStatusPanel(), BorderLayout.PAGE_START);
+        this.add(this.createStatusPanel(), BorderLayout.PAGE_END);
         this.add(new JScrollPane(this.createPodsTable()), BorderLayout.CENTER);
 
         this.initializeUpdatingLastRefreshField();
@@ -65,7 +66,7 @@ class EnvironmentTabPanel extends JPanel {
     private JPanel createStatusPanel() {
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        panel.setBackground(Color.GRAY);
+        panel.setBackground(Color.LIGHT_GRAY);
 
         this.lastRefreshLabel = new JLabel(LocalizationUtils.getString("unknown"));
         panel.add(this.lastRefreshLabel);

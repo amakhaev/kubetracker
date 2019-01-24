@@ -1,17 +1,19 @@
-package com.tracker.ui.podsTab;
+package com.tracker.ui;
 
 import com.tracker.domain.filter.FilterModel;
 import com.tracker.domain.filter.FilterService;
 import com.tracker.domain.filter.FilterType;
 import com.tracker.domain.token.TokenService;
-import com.tracker.kube.PodsService;
+import com.tracker.domain.kube.PodsService;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
 import lombok.extern.slf4j.Slf4j;
 import rx.Observable;
 import rx.schedulers.Schedulers;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -19,7 +21,23 @@ import java.util.stream.Collectors;
  * Provides the pods pane controller
  */
 @Slf4j
-class PodsPanelController {
+public class PodsController {
+
+    private static final Map<String, PodsController> instancesPerNamespace = new HashMap<>();
+
+    /**
+     * Gets the instance by given namespace
+     *
+     * @param namespace - the namespace for creating
+     * @return the {@link PodsController} instance
+     */
+    public static PodsController getInstance(String namespace) {
+        if (!instancesPerNamespace.containsKey(namespace)) {
+            instancesPerNamespace.put(namespace, new PodsController(namespace));
+        }
+
+        return instancesPerNamespace.get(namespace);
+    }
 
     private final String namespace;
     private final PodsService podsService;
@@ -27,9 +45,9 @@ class PodsPanelController {
     private final FilterService filterService;
 
     /**
-     * Initialize new instance of {@link PodsPanelController}
+     * Initialize new instance of {@link PodsController}
      */
-    PodsPanelController(String namespace) {
+    private PodsController(String namespace) {
         this.podsService = PodsService.getInstance(namespace);
         this.tokenService = TokenService.INSTANCE;
         this.filterService = FilterService.INSTANCE;
@@ -41,7 +59,7 @@ class PodsPanelController {
      *
      * @return the {@link Observable} instance
      */
-    Observable<PodList> scheduleRefreshPods() {
+    public Observable<PodList> scheduleRefreshPods() {
         return Observable.interval(15, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.newThread())
                 .map((data) -> this.retrievePods());
@@ -50,7 +68,7 @@ class PodsPanelController {
     /**
      * Gets the data about pods
      */
-    Observable<PodList> getPods() {
+    public Observable<PodList> getPods() {
         return Observable.just(this.retrievePods()).subscribeOn(Schedulers.newThread());
     }
 

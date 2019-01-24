@@ -1,4 +1,4 @@
-package com.tracker.kube;
+package com.tracker.domain.kube;
 
 import com.tracker.domain.token.TokenModel;
 import com.tracker.utils.ResourceHelper;

@@ -34,3 +34,12 @@ hs_err_pid*
 # Config
 kubetracker\.db3
 config\.properties
+
+### Web Application ###
+src/main/webapp/kube-tracker/.idea
+src/main/webapp/kube-tracker/node_modules
+src/main/webapp/kube-tracker/dist
+src/main/webapp/src/**/*.js
+src/main/webapp/kube-tracker/npm-debug.log*
+src/main/webapp/kube-tracker/coverage
+src/main/webapp/kube-tracker/e2e

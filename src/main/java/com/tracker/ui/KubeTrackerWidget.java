@@ -4,11 +4,11 @@ import com.tracker.ui.controls.multiselect.MultiSelectDialog;
 import com.tracker.ui.podsTab.PodFilterAdapter;
 import com.tracker.ui.podsTab.PodsPanel;
 import com.tracker.ui.setting.SettingDialog;
+import com.tracker.ui.shellTab.ShellPanel;
 import com.tracker.utils.EnvironmentUtils;
 import com.tracker.utils.LocalizationUtils;
 import com.tracker.utils.ResourceHelper;
 import lombok.extern.slf4j.Slf4j;
-import rx.Observable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,6 +29,7 @@ public class KubeTrackerWidget {
 
     private JFrame frame;
     private PodsPanel podsPanel;
+    private ShellPanel shellPanel;
 
     private SettingDialog settingDialog;
     private MultiSelectDialog multiSelectDialog;
@@ -48,6 +49,8 @@ public class KubeTrackerWidget {
     public void initialize() {
         SwingUtilities.invokeLater(() -> {
             this.podsPanel.initialize();
+            this.shellPanel.initialize();
+
             this.settingDialog = new SettingDialog(
                     this.frame,
                     LocalizationUtils.getString("settings"),
@@ -167,9 +170,8 @@ public class KubeTrackerWidget {
     private JTabbedPane createTabPanel() {
         JTabbedPane tabPane = new JTabbedPane();
 
-        JPanel databasePanel = new JPanel();
-
         this.podsPanel = new PodsPanel();
+        this.shellPanel = new ShellPanel();
 
         this.podsPanel.setOnUpdateWidget(hasError -> {
             refreshIcons(hasError);
@@ -177,7 +179,7 @@ public class KubeTrackerWidget {
         });
 
         tabPane.addTab(LocalizationUtils.getString("pods"), this.podsPanel);
-        tabPane.addTab(LocalizationUtils.getString("db"), databasePanel);
+        tabPane.addTab(LocalizationUtils.getString("shell"), this.shellPanel);
 
         return tabPane;
     }
