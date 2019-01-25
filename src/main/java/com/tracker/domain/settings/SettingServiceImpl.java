@@ -1,6 +1,8 @@
 package com.tracker.domain.settings;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
 
@@ -8,24 +10,26 @@ import java.sql.SQLException;
  * Provides the implementation of settings service
  */
 @Slf4j
+@Service
 public class SettingServiceImpl implements SettingService {
 
-    private SettingsDao settingsDao;
-    private SettingsMapper mapper;
+    private final SettingsDao settingsDao;
+    private final SettingsModelMapper mapper;
 
     /**
      * Initialize new instance of {@link SettingServiceImpl}
      */
-    SettingServiceImpl() {
+    @Autowired
+    SettingServiceImpl(SettingsModelMapper mapper) {
         this.settingsDao = new SettingsDao();
-        this.mapper = SettingsMapper.INSTANCE;
+        this.mapper = mapper;
     }
 
     /**
      * Gets the settings model
      */
     @Override
-    public SettingModel getSettings() {
+    public SettingsModel getSettings() {
         try {
             return this.mapper.entityToModel(this.settingsDao.getSettings());
         } catch (SQLException e) {
@@ -37,14 +41,14 @@ public class SettingServiceImpl implements SettingService {
     /**
      * Updates the settings model
      *
-     * @param settingModel - the model to update
+     * @param settingsModel - the model to update
      * @return updated model
      */
     @Override
-    public SettingModel updateSettings(SettingModel settingModel) {
+    public SettingsModel updateSettings(SettingsModel settingsModel) {
         try {
             return this.mapper.entityToModel(
-                    this.settingsDao.update(this.mapper.modelToEntity(settingModel))
+                    this.settingsDao.update(this.mapper.modelToEntity(settingsModel))
             );
         } catch (SQLException e) {
             log.error(e.getMessage());

@@ -5,19 +5,17 @@ package com.tracker.domain.settings;
  */
 public interface SettingService {
 
-    SettingService INSTANCE = new SettingServiceImpl();
-
     /**
      * Gets the settings model
      */
-    SettingModel getSettings();
+    SettingsModel getSettings();
 
     /**
      * Updates the settings model
      *
-     * @param settingModel - the model to update
+     * @param settingsModel - the model to update
      * @return updated model
      */
-    SettingModel updateSettings(SettingModel settingModel);
+    SettingsModel updateSettings(SettingsModel settingsModel);
 
 }
