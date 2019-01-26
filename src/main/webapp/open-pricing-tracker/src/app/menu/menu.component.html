@@ -1,0 +1,14 @@
+<div class="tracker-menu">
+
+  <p-sidebar [style]="{width:'100px'}"
+             [visible]="true"
+             [modal]="false"
+             [baseZIndex]="10000"
+             [showCloseIcon]="false">
+    <div class="navigation">
+        <a (click)="onDashboardClick($event)"><i class="pi pi-th-large"></i></a>
+        <a (click)="onSettingsClick($event)"><i class="pi pi-cog"></i></a>
+    </div>
+  </p-sidebar>
+
+</div>
