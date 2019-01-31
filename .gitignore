@@ -22,7 +22,6 @@
 
 # Graddle
 .gradle/
-gradle/
 
 # Idea
 .idea/
