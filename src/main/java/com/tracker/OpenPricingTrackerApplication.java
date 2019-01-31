@@ -13,10 +13,10 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @EnableConfigurationProperties
 @ConfigurationProperties
-public class KubeTrackerApplication {
+public class OpenPricingTrackerApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(KubeTrackerApplication.class, args);
+        SpringApplication.run(OpenPricingTrackerApplication.class, args);
 
         /*SwingUtilities.invokeLater(() -> {
             KubeTrackerWidget kubeTrackerWidget = new KubeTrackerWidget();
