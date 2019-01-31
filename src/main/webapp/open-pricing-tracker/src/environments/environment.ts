@@ -4,7 +4,6 @@
 
 export const environment = {
   production: false,
-  // baseApiUrl: "http://10.0.9.105:6547/kubetracker",
   baseApiUrl: "http://localhost:6547/kubetracker",
 
   urls: {

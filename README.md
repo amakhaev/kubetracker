@@ -35,6 +35,7 @@
 
 ##### Client
 * Navigate to `src/main/webapp/open-pricing-tracker`
+* If it first running then need to install node modules, execute `npm start`
 * Execute the command `npm start`
 
 #### Set up application
