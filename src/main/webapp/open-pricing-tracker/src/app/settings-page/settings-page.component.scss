@@ -1,0 +1,30 @@
+@import "../../styles/variables";
+
+$pageWidth: 400px;
+
+.settings-page {
+  margin: $marginNormal;
+  width: $pageWidth;
+
+  h1 {
+    color: $primaryDark;
+  }
+
+  .input-field {
+    margin-bottom: $marginLarge;
+
+    .ui-inputtext {
+      width: $pageWidth;
+    }
+  }
+
+  .buttons {
+    width: $pageWidth;
+    display: flex;
+    justify-content: flex-end;
+
+    button {
+      margin-left: $marginSmall;
+    }
+  }
+}

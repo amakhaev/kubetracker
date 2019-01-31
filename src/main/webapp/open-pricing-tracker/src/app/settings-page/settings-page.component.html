@@ -1,0 +1,22 @@
+<div class="settings-page">
+  <h1>Settings</h1>
+
+  <span class="ui-float-label input-field">
+    <input id="full-name-input" type="text" size="128" [(ngModel)]="settings.fullName" pInputText>
+    <label for="full-name-input">Full name</label>
+  </span>
+
+  <span class="ui-float-label input-field">
+    <input id="short-name-input" type="text" size="128" [(ngModel)]="settings.shortName" pInputText>
+    <label for="short-name-input">Short name</label>
+  </span>
+
+  <div class="input-field">
+    <input pPassword type="password" [feedback]="false" [(ngModel)]="settings.password"/>
+  </div>
+
+  <div class="buttons">
+    <button pButton type="button" label="Save" (click)="onSaveClick($event)"></button>
+    <button pButton type="button" label="Cancel" class="ui-button-secondary" (click)="onCancelClick($event)"></button>
+  </div>
+</div>

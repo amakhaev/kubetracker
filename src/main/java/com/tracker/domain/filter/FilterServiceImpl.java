@@ -1,6 +1,8 @@
 package com.tracker.domain.filter;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
 import java.util.Collections;
@@ -10,21 +12,23 @@ import java.util.List;
  * Provides the implementation of {@link FilterService}
  */
 @Slf4j
+@Service
 public class FilterServiceImpl implements FilterService {
 
-    private FilterDao filterDao;
+    private final FilterDao filterDao;
     private FilterMapper mapper;
 
     /**
      * Initialize new instance of {@link FilterServiceImpl}
      */
-    FilterServiceImpl() {
-        this.filterDao = new FilterDao();
+    @Autowired
+    FilterServiceImpl(FilterDao filterDao) {
+        this.filterDao = filterDao;
         this.mapper = FilterMapper.INSTANCE;
     }
 
     /**
-     * Gets the list of filters for pods
+     * Gets the list of filters for podList
      */
     @Override
     public List<FilterModel> getFilters(FilterType filterType) {

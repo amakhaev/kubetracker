@@ -1,0 +1,26 @@
+@import "../../styles/variables";
+
+.tracker-menu {
+
+  /deep/ .ui-sidebar {
+    background-color: $primaryDark;
+    border-color: $primaryDark;
+    color: $primaryWhite;
+  }
+
+  .navigation {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    a {
+      color: $primaryWhite;
+      font-size: 40px;
+    }
+
+    a:hover {
+      color: $lightBlue;
+      cursor: pointer;
+    }
+  }
+}

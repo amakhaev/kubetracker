@@ -1,0 +1,82 @@
+@import "../../../styles/variables";
+
+.pod-status-widget {
+  width: 100%;
+  height: 600px;
+  border: 1px solid $primaryDark;
+  border-radius: 5px;
+
+  .header {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background-color: $primaryDark;
+    color: $primaryWhite;
+    padding-right: $marginSmall;
+    padding-left: $marginSmall;
+
+    .title {
+      font-size: $fontSizeLarge;
+      text-transform: capitalize;
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      font-size: $fontSizeLarge;
+
+      @keyframes ui-progress-spinner-color {
+        100%,
+        0% {
+          stroke: $primaryWhite;
+        }
+        40% {
+          stroke: $primaryBlue;
+        }
+        66% {
+          stroke: $green;
+        }
+        80%,
+        90% {
+          stroke: $red;
+        }
+      }
+
+      span {
+        font-size: $fontSizeNormal;
+      }
+
+      .circle {
+        width: 35px;
+        height: 35px;
+        display: inline-block;
+        border-radius: 70%;
+        margin-left: $marginSmall;
+      }
+
+      .circle-green {
+        border:1px solid $primaryDark;
+        background: radial-gradient($green 40%, $primaryDark);
+      }
+
+      .circle-red {
+        border:1px solid $primaryDark;
+        background: radial-gradient($red 40%, $primaryDark);
+      }
+    }
+  }
+
+  .pod-items {
+    /deep/ .ui-dataview-header {
+      display: none;
+    }
+
+    /deep/ .ui-dataview-content {
+      border: none;
+      padding: 0;
+    }
+  }
+}

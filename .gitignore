@@ -18,6 +18,7 @@
 *.zip
 *.tar.gz
 *.rar
+*.yml
 
 # Graddle
 .gradle/
@@ -34,3 +35,13 @@ hs_err_pid*
 # Config
 kubetracker\.db3
 config\.properties
+
+### Web Application ###
+src/main/webapp/open-pricing-tracker/.idea
+src/main/webapp/open-pricing-tracker/.editorconfig
+src/main/webapp/open-pricing-tracker/node_modules
+src/main/webapp/open-pricing-tracker/dist
+src/main/webapp/src/**/*.js
+src/main/webapp/open-pricing-tracker/npm-debug.log*
+src/main/webapp/open-pricing-tracker/coverage
+src/main/webapp/open-pricing-tracker/e2e

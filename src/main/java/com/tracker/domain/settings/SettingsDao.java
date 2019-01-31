@@ -2,8 +2,11 @@ package com.tracker.domain.settings;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
+import com.j256.ormlite.support.ConnectionSource;
 import com.tracker.configuration.DatabaseConfiguration;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
 
@@ -11,6 +14,7 @@ import java.sql.SQLException;
  * Provides the DAO object to work with settings table
  */
 @Slf4j
+@Service
 class SettingsDao {
 
     private Dao<SettingsEntity, Integer> settingsDao;
@@ -18,9 +22,10 @@ class SettingsDao {
     /**
      * Initialize new instance of {@link SettingsDao}
      */
-    SettingsDao() {
+    @Autowired
+    SettingsDao(ConnectionSource connection) {
         try {
-            this.settingsDao = DaoManager.createDao(DatabaseConfiguration.getConnection(), SettingsEntity.class);
+            this.settingsDao = DaoManager.createDao(connection, SettingsEntity.class);
         } catch (SQLException e) {
             log.error(e.getMessage());
         }
