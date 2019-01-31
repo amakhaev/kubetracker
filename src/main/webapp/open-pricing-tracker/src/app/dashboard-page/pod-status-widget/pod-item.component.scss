@@ -1,0 +1,37 @@
+@import "../../../styles/variables";
+
+.pod-item {
+  margin-bottom: $marginSmall;
+  padding: 10px;
+
+  .title {
+    font-size: $fontSizeNormal;
+    margin-bottom: $marginNormal;
+    font-weight: $font-weight-bold;
+  }
+
+  .state {
+    display: flex;
+
+    div {
+      width: 33%;
+    }
+
+    .name {
+      font-size: $fontSizeSmall;
+      font-weight: $font-weight-bold;
+    }
+
+    .value {
+      font-size: $fontSizeNormal;
+    }
+  }
+}
+
+.pod-item-green {
+  background-color: $lightGreen;
+}
+
+.pod-item-red {
+  background-color: $red;
+}

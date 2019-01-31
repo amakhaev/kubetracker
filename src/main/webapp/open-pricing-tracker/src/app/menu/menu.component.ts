@@ -31,4 +31,18 @@ export class MenuComponent {
     this.router.navigate([environment.navigation.settings]);
   }
 
+  /**
+   * Handles the click on 'info' icon.
+   */
+  public onInfoClick() {
+    window.open(environment.navigation.swagger, '_blank');
+  }
+
+  /**
+   * Handles the click on 'info' icon.
+   */
+  public onFilterClick() {
+    this.router.navigate([environment.navigation.filters]);
+  }
+
 }

@@ -1,0 +1,28 @@
+<div class="pod-status-widget">
+
+  <div class="header">
+    <label class="title">{{namespace}}</label>
+    <div class="actions">
+      <p-progressSpinner *ngIf="isLoading"
+                         [style]="{width: '20px', height: '20px'}"
+                         animationDuration=".5s">
+      </p-progressSpinner>
+      <span *ngIf="pods" class="title">{{lastRefreshSeconds}}s</span>
+      <div class="circle" [ngClass]="{'circle-green': isAllPodsReady, 'circle-red': !isAllPodsReady}"></div>
+    </div>
+  </div>
+
+  <div class="pod-items">
+    <p-scrollPanel [style]="{width: '100%', height: '540px'}">
+      <p-dataView #dv [value]="pods" [paginator]="false" [lazy]="true">
+
+        <ng-template let-pod pTemplate="listItem">
+          <div>
+            <pod-item [item]="pod"></pod-item>
+          </div>
+        </ng-template>
+
+      </p-dataView>
+    </p-scrollPanel>
+  </div>
+</div>

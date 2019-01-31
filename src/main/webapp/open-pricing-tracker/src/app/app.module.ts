@@ -10,6 +10,10 @@ import {DashboardComponent} from "./dashboard-page/dashboard-page.component";
 import {SettingsPageComponent} from "./settings-page/settings-page.component";
 import {DashboardPageModule} from "./dashboard-page/dashboard-page.module";
 import {SettingsPageModule} from "./settings-page/settings-page.module";
+import {HttpClientModule} from "@angular/common/http";
+import {OpenPricingSharedModule} from "./shared/open-pricing-shared.module";
+import {FilterPageModule} from "./filter-page/filter-page.module";
+import {FilterPageComponent} from "./filter-page/filter-page.component";
 
 /**
  * List of known routes.
@@ -17,7 +21,8 @@ import {SettingsPageModule} from "./settings-page/settings-page.module";
 const appRoutes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   { path: 'dashboard', component: DashboardComponent  },
-  { path: 'settings', component: SettingsPageComponent }
+  { path: 'settings', component: SettingsPageComponent },
+  { path: 'filters', component: FilterPageComponent }
 ];
 
 @NgModule({
@@ -27,11 +32,14 @@ const appRoutes: Routes = [
   imports: [
     RouterModule.forRoot(appRoutes),
     BrowserModule,
+    HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MenuModule,
     DashboardPageModule,
-    SettingsPageModule
+    SettingsPageModule,
+    OpenPricingSharedModule,
+    FilterPageModule
   ],
   providers: [],
   exports: [RouterModule],

@@ -18,4 +18,13 @@ public class ApiLocations {
      */
     public static final String SETTINGS = ROOT + "/settings";
 
+    /**
+     * Provides the pod list URL
+     */
+    public static final String POD_LIST = ROOT + "/pods";
+
+    /**
+     * Provides the filter URL
+     */
+    public static final String FILTERS = ROOT + "/filters";
 }

@@ -29,9 +29,7 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("Open pricing tracker swagger")
-                .description("swagger description")
-                .termsOfServiceUrl("http://localhost:6547/swagger")
+                .title("Open pricing tracker")
                 .version("1.0")
                 .build();
     }

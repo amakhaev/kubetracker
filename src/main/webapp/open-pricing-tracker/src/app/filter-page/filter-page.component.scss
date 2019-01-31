@@ -1,0 +1,32 @@
+@import "../../styles/variables";
+
+.filters {
+  margin: $marginNormal;
+
+  .input-field {
+    margin-bottom: $marginLarge;
+
+    input {
+      width: 400px;
+    }
+  }
+
+  .available-filters {
+    display: flex;
+
+    .filter-item {
+      display: flex;
+      align-items: center;
+
+      background-color: $darkBlue;
+      border-radius: 5px;
+      padding: 3px;
+      margin-right: 5px;
+      color: $primaryWhite;
+
+      i {
+        cursor: pointer;
+      }
+    }
+  }
+}

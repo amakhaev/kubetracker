@@ -4,6 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --port=6548",
+    "share": "ng serve --host=0.0.0.0 --port=6548",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
@@ -22,6 +23,7 @@
     "@angular/platform-browser-dynamic": "~7.2.0",
     "@angular/router": "~7.2.0",
     "bootstrap": "^4.2.1",
+    "cerialize": "^0.1.18",
     "core-js": "2.5.4",
     "primeflex": "1.0.0-rc.1",
     "primeicons": "1.0.0",

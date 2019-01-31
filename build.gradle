@@ -34,7 +34,7 @@ repositories {
 
 task compile(type: Jar) {
     manifest {
-        attributes 'Implementation-Title': 'Gradle Jar File for kube tracker',
+        attributes 'Implementation-Title': 'Gradle Jar File for podList tracker',
                 'Implementation-Version': version,
                 'Main-Class': 'com.tracker.KubeTrackerApplication'
     }

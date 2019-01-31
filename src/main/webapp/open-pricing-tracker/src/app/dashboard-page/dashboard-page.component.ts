@@ -1,4 +1,5 @@
 import {Component} from "@angular/core";
+
 /**
  * Provides the dashboard component
  */

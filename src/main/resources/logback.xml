@@ -8,7 +8,7 @@
 
     <logger name="com" level="INFO"></logger>
 
-    <root level="debug">
+    <root level="error">
         <appender-ref ref="CONSOLE"></appender-ref>
     </root>
 

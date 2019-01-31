@@ -3,14 +3,12 @@ package com.tracker.domain.filter;
 import java.util.List;
 
 /**
- * Provides the service to work with pods filter
+ * Provides the service to work with podList filter
  */
 public interface FilterService {
 
-    FilterService INSTANCE = new FilterServiceImpl();
-
     /**
-     * Gets the list of filters for pods
+     * Gets the list of filters for podList
      */
     List<FilterModel> getFilters(FilterType type);
 

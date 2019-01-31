@@ -20,8 +20,8 @@ public class SettingServiceImpl implements SettingService {
      * Initialize new instance of {@link SettingServiceImpl}
      */
     @Autowired
-    SettingServiceImpl(SettingsModelMapper mapper) {
-        this.settingsDao = new SettingsDao();
+    SettingServiceImpl(SettingsModelMapper mapper, SettingsDao settingsDao) {
+        this.settingsDao = settingsDao;
         this.mapper = mapper;
     }
 

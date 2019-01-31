@@ -1,0 +1,18 @@
+<div class="pod-item"
+     [ngClass]="{'pod-item-green': item.ready, 'pod-item-red': !item.ready}">
+  <div class="title">{{item.name}}</div>
+  <div class="state">
+    <div class="middle-size">
+      <label class="name">Restarts: </label>
+      <label class="value">{{item.restartCount}}</label>
+    </div>
+    <div class="middle-size">
+      <label class="name">Age: </label>
+      <label class="value">{{age}}</label>
+    </div>
+    <div class="small-size">
+      <label class="name">Status: </label>
+      <label class="value">{{item.status}}</label>
+    </div>
+  </div>
+</div>

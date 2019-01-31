@@ -1,0 +1,10 @@
+auth:
+  url: <url_to_get_token>
+kube:
+  master_url: <kubernetes_master_url>
+  client_secret: <kubernetes_client_secret>
+  client_id: <kubernetes_client_id>
+db:
+  name: <path_to_sqlite_database>
+server:
+  port: 6547

@@ -1,0 +1,14 @@
+<div class="filters">
+  <span class="ui-float-label input-field">
+    <input id="new-filter-input" type="text" size="128" [(ngModel)]="newFilterValue" pInputText>
+    <label for="new-filter-input">New filter</label>
+    <button pButton type="button" label="Add" (click)="onAdd()"></button>
+  </span>
+
+  <div class="available-filters">
+    <div class="filter-item" *ngFor="let filter of availableFilters; let i = index">
+      {{filter.filterValue}}
+      <i class="pi pi-times" (click)="onDelete(filter)"></i>
+    </div>
+  </div>
+</div>

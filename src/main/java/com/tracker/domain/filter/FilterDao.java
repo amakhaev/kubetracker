@@ -2,8 +2,10 @@ package com.tracker.domain.filter;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
-import com.tracker.configuration.DatabaseConfiguration;
+import com.j256.ormlite.support.ConnectionSource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -12,6 +14,7 @@ import java.util.List;
  * Provides the DAO for pod filters model
  */
 @Slf4j
+@Service
 class FilterDao {
 
     private Dao<FilterEntity, Integer> podFilterDao;
@@ -19,9 +22,10 @@ class FilterDao {
     /**
      * Initialize new instance of {@link FilterDao}
      */
-    FilterDao() {
+    @Autowired
+    FilterDao(ConnectionSource connection) {
         try {
-            this.podFilterDao = DaoManager.createDao(DatabaseConfiguration.getConnection(), FilterEntity.class);
+            this.podFilterDao = DaoManager.createDao(connection, FilterEntity.class);
         } catch (SQLException e) {
             log.error(e.getMessage());
         }
