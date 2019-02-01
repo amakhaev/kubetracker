@@ -22,8 +22,8 @@ export class JenkinsJobModel {
   @autoserialize
   public result: string;
 
-  @autoserializeAs(Date)
-  public startedAt: Date;
+  @autoserialize
+  public startedAt: number;
 
   @autoserialize
   public url: string;

@@ -114,8 +114,7 @@ export class JenkinsJobUiTestComponent implements OnInit, OnDestroy {
     currentDuration -= hours * 3600;
 
     let minutes: number = Math.floor(currentDuration / 60);
-
-    return (days === 0 ? "" : days + "d ") + hours + "h " + minutes + "m";
+    return (hours === 0 ? "" : hours + "h ") + minutes + "m";
   }
 
   /**
