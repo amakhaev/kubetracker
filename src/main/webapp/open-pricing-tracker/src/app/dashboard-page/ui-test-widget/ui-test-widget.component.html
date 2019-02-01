@@ -1,0 +1,10 @@
+<div class="ui-test-content">
+  <div class="widget-header">
+    <label class="title">UI Tests — {{environment}}</label>
+  </div>
+
+  <div class="env">
+    <jenkins-job-ui-test [environment]="environment" [testsType]="'smoke'" ></jenkins-job-ui-test>
+    <jenkins-job-ui-test [environment]="environment" [testsType]="'end_to_end'"></jenkins-job-ui-test>
+  </div>
+</div>

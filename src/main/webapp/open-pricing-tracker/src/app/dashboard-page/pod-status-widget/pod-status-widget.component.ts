@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from "@angular/core";
+import {Component, HostListener, Input, OnDestroy, OnInit} from "@angular/core";
 import {PodListService} from "../../shared/services/pod-list.service";
 import {PodModel} from "../../shared/models/pod.model";
 import {isNullOrUndefined} from "util";
@@ -11,12 +11,21 @@ import {isNullOrUndefined} from "util";
   templateUrl: './pod-status-widget.component.html',
   styleUrls: ['./pod-status-widget.component.scss']
 })
-export class PodStatusWidgetComponent implements OnInit {
+export class PodStatusWidgetComponent implements OnInit, OnDestroy {
+
+  private _updateInterval: any;
+  private _lastUpdateSecondsInterval: any;
+  private _windowHeight: number;
 
   /**
    * The namespace for looking on watched component
    */
   @Input() public namespace: string;
+
+  @HostListener('window:resize', ['$event'])
+  public onResize(event) {
+    this._windowHeight = window.innerHeight;
+  }
 
   /**
    * The list of pods that available for current namespace
@@ -28,6 +37,9 @@ export class PodStatusWidgetComponent implements OnInit {
    */
   public lastRefreshSeconds: number;
 
+  /**
+   * Indicates when component tried to refresh data
+   */
   public isLoading: boolean;
 
   /**
@@ -35,6 +47,18 @@ export class PodStatusWidgetComponent implements OnInit {
    */
   public get isAllPodsReady(): boolean {
     return this.pods && isNullOrUndefined(this.pods.find(p => !p.ready));
+  }
+
+  /**
+   * Gets the height of component.
+   */
+  public get componentHeight(): number {
+    if (!this._windowHeight) {
+      return 540;
+    }
+
+    let calculatedHeight: number = this._windowHeight / 100 * 40;
+    return calculatedHeight >= 540 ? calculatedHeight : 540;
   }
 
   /**
@@ -46,10 +70,16 @@ export class PodStatusWidgetComponent implements OnInit {
   }
 
   public ngOnInit(): void {
+    this._windowHeight = window.innerHeight;
     this.lastRefreshSeconds = 0;
     this.refreshData();
-    setInterval(() => { this.refreshData(); }, 15000);
-    setInterval(() => { this.lastRefreshSeconds++; }, 1000);
+    this._updateInterval = setInterval(() => { this.refreshData(); }, 15000);
+    this._lastUpdateSecondsInterval = setInterval(() => { this.lastRefreshSeconds++; }, 1000);
+  }
+
+  public ngOnDestroy(): void {
+    clearInterval(this._updateInterval);
+    clearInterval(this._lastUpdateSecondsInterval);
   }
 
   private refreshData(): void {

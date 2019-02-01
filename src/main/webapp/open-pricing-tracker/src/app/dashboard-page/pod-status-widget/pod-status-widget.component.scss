@@ -1,27 +1,15 @@
 @import "../../../styles/variables";
+@import "../../../styles/widget-header";
 
 .pod-status-widget {
   width: 100%;
-  height: 600px;
+  min-width: 600px;
   border: 1px solid $primaryDark;
   border-radius: 5px;
 
   .header {
-    width: 100%;
-    height: 50px;
-    display: flex;
-    align-items: center;
+    @extend .widget-header;
     justify-content: space-between;
-
-    background-color: $primaryDark;
-    color: $primaryWhite;
-    padding-right: $marginSmall;
-    padding-left: $marginSmall;
-
-    .title {
-      font-size: $fontSizeLarge;
-      text-transform: capitalize;
-    }
 
     .actions {
       display: flex;

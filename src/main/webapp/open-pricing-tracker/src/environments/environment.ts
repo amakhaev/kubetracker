@@ -10,6 +10,7 @@ export const environment = {
     settings: "/settings",
     pods: "/pods",
     filters: "/filters",
+    jenkinsJobUiTest: "/jenkins/ui_test"
   },
 
   navigation: {

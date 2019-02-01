@@ -3,6 +3,7 @@ import {NgModule} from "@angular/core";
 import {PodListService} from "./services/pod-list.service";
 import {BrowserModule} from "@angular/platform-browser";
 import {FilterService} from "./services/filter.service";
+import {JenkinsJobsService} from "./services/jenkins-jobs.service";
 
 @NgModule({
   imports: [
@@ -13,7 +14,8 @@ import {FilterService} from "./services/filter.service";
   providers: [
     SettingsService,
     PodListService,
-    FilterService
+    FilterService,
+    JenkinsJobsService
   ],
   exports: [
   ],

@@ -1,0 +1,19 @@
+@import "./variables";
+
+.widget-header {
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+  height: 50px;
+
+  background-color: $primaryDark;
+  color: $primaryWhite;
+  padding-right: $marginSmall;
+  padding-left: $marginSmall;
+
+  .title {
+    font-size: $fontSizeLarge;
+    text-transform: capitalize;
+  }
+}

@@ -1,0 +1,72 @@
+@import "../../../../styles/variables";
+
+$colorBlue: #83b7df;
+$colorGray: #ccc5c5;
+$width: 300px;
+$height: 200px;
+
+.status-container {
+  background-color: $colorGray;
+  width: $width;
+  height: $height;
+  margin: 0 $marginSmall $marginSmall;
+
+  .ui-test-status {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: $width;
+    height: $height;
+
+    .no-data, .title {
+      font-size: $fontSizeLarge;
+      font-weight: $font-weight-bold;
+    }
+
+    .start-date, .estimate-time {
+      font-size: $fontSizeNormal;
+    }
+
+    .estimate-time {
+      margin-top: $marginSmall;
+    }
+  }
+
+  .success {
+    background-color: $colorBlue;
+  }
+
+  .failure {
+    background-color: $red;
+  }
+
+  .not-built, .aborted {
+    background-color: $colorGray;
+  }
+
+  .in-progress {
+    animation: 2s ease infinite pulse;
+  }
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+@keyframes pulse {
+  0% {
+    background: $colorGray;
+    transform: scale(1);
+  }
+
+  50% {
+    background: $green;
+    transform: scale(1);
+  }
+
+  100% {
+    background: $colorGray;
+    transform: scale(1);
+  }
+}

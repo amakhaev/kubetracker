@@ -1,5 +1,6 @@
 package com.tracker.api.settings;
 
+import com.offbytwo.jenkins.JenkinsServer;
 import com.tracker.api.ApiLocations;
 import com.tracker.domain.settings.SettingService;
 import io.swagger.annotations.*;
@@ -8,6 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
+import java.net.URISyntaxException;
 
 /**
  * REST API controller representing methods for working with settings.

@@ -14,5 +14,6 @@ public class SettingsModel {
     private String fullName;
     private String shortName;
     private String password;
+    private String jenkinsApiToken;
 
 }

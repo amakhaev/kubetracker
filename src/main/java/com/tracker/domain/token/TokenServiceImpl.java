@@ -161,7 +161,7 @@ public class TokenServiceImpl implements TokenService {
             return true;
         }
 
-        return ChronoUnit.SECONDS.between(this.tokenCreatedAt, LocalTime.now()) >= expiredTimeInSecond - 5;
+        return ChronoUnit.SECONDS.between(LocalTime.now(), this.tokenCreatedAt) >= expiredTimeInSecond - 5;
     }
 
     private boolean isNeedToRefresh() {

@@ -1,0 +1,26 @@
+<div class="status-container" [ngClass]="{'clickable': isClickable}" (click)="onClick()">
+  <div class="ui-test-status" [ngClass]="{
+      'success': result === jenkinsJobResult.SUCCESS,
+      'failure': result === jenkinsJobResult.FAILURE,
+      'not-built': result === jenkinsJobResult.NOT_BUILT,
+      'aborted': result === jenkinsJobResult.ABORTED,
+      'in-progress': result === jenkinsJobResult.IN_PROGRESS
+    }">
+    <ng-container *ngIf="uiTestStatus; then jobStatus; else noData"></ng-container>
+  </div>
+</div>
+
+<ng-template #jobStatus>
+  <label class="title" [ngClass]="{'clickable': isClickable}">{{title}}</label>
+  <label class="start-date" [ngClass]="{'clickable': isClickable}">{{startDate}}</label>
+  <label *ngIf="result === jenkinsJobResult.IN_PROGRESS"
+         [ngClass]="{'clickable': isClickable}"
+         class="estimate-time"
+  >Estimate time: {{estimateTime}}</label>
+</ng-template>
+
+<ng-template #noData>
+  <div class="no-data">
+    <label>No data available</label>
+  </div>
+</ng-template>
