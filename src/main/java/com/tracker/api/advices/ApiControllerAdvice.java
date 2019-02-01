@@ -1,9 +1,6 @@
 package com.tracker.api.advices;
 
-import com.tracker.domain.common.exception.BadRequestException;
-import com.tracker.domain.common.exception.DuplicatedEntityException;
-import com.tracker.domain.common.exception.EntityNotFoundException;
-import com.tracker.domain.common.exception.OperationDeniedException;
+import com.tracker.domain.common.exception.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -97,6 +94,17 @@ public class ApiControllerAdvice extends ResponseEntityExceptionHandler {
         log.error("Operation on {} was rejected by server: {}", request.getContextPath(), ex.getMessage());
 
         final ApiErrorResponse apiError = new ApiErrorResponse(HttpStatus.FORBIDDEN, ex.getLocalizedMessage());
+
+        return super.handleExceptionInternal(ex, apiError, new HttpHeaders(), apiError.getStatus(), request);
+    }
+
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseBody
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<Object> handleUnauthorizedException(UnauthorizedException ex, WebRequest request) {
+        log.error("Authorization is required: {}", ex.getMessage());
+
+        final ApiErrorResponse apiError = new ApiErrorResponse(HttpStatus.UNAUTHORIZED, ex.getLocalizedMessage());
 
         return super.handleExceptionInternal(ex, apiError, new HttpHeaders(), apiError.getStatus(), request);
     }

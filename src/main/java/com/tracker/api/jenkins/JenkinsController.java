@@ -2,7 +2,7 @@ package com.tracker.api.jenkins;
 
 import com.tracker.api.ApiLocations;
 import com.tracker.domain.jenkins.JenkinsJobEnvironment;
-import com.tracker.domain.jenkins.JenkinsJobTestType;
+import com.tracker.domain.jenkins.JenkinsJobTestSuite;
 import com.tracker.domain.jenkins.JenkinsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -49,9 +49,9 @@ public class JenkinsController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<JenkinsJobDto> getUiTestJob(
             @ApiParam(value = "Environment where tests job where run") @RequestParam(name = "environment") JenkinsJobEnvironment environment,
-            @ApiParam(value = "The type of job that was ran") @RequestParam(name = "jobType") JenkinsJobTestType testType
+            @ApiParam(value = "The suite of tests that were ran") @RequestParam(name = "suite") JenkinsJobTestSuite suite
     ) {
-        return ResponseEntity.ok(this.dtoMapper.modelToDto(this.jenkinsService.getTestJobStatus(environment, testType)));
+        return ResponseEntity.ok(this.dtoMapper.modelToDto(this.jenkinsService.getTestJobStatus(environment, suite)));
     }
 
 }

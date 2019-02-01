@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  baseApiUrl: "http://localhost:6546/kubetracker",
+  baseApiUrl: "http://localhost:6545/kubetracker",
 
   urls: {
     settings: "/settings",
@@ -17,7 +17,7 @@ export const environment = {
     dashboard: "/dashboard",
     settings: "/settings",
     filters: "/filters",
-    swagger: "http://localhost:6546/swagger-ui.html"
+    swagger: "http://localhost:6545/swagger-ui.html"
   }
 };
 

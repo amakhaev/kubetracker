@@ -12,6 +12,6 @@ public interface JenkinsService {
      * @param testType - the type of tests
      * @return the {@link JenkinsJobModel} instance
      */
-    JenkinsJobModel getTestJobStatus(JenkinsJobEnvironment environment, JenkinsJobTestType testType);
+    JenkinsJobModel getTestJobStatus(JenkinsJobEnvironment environment, JenkinsJobTestSuite testType);
 
 }

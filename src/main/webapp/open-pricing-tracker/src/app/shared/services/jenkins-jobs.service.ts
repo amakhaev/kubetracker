@@ -20,11 +20,11 @@ export class JenkinsJobsService {
   /**
    * Retrieves the result of test job
    */
-  public retrieveUiTestJob(env: "DEV" | "QA" | string, type: "SMOKE" | "END_TO_END" | string): Promise<JenkinsJobModel> {
+  public retrieveUiTestJob(env: "DEV" | "QA" | string, suite: "SMOKE" | "END_TO_END" | string): Promise<JenkinsJobModel> {
     return new Promise((resolve, reject) => {
       let params = new HttpParams();
       params = params.append("environment", env);
-      params = params.append("jobType", type);
+      params = params.append("suite", suite);
 
       this.http.get(environment.baseApiUrl + environment.urls.jenkinsJobUiTest, {params}).subscribe(
         data => {
