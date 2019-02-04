@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from "@angular/core";
+import {ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit} from "@angular/core";
 import {JenkinsJobsService} from "../../../shared/services/jenkins-jobs.service";
 import {JenkinsJobModel} from "../../../shared/models/jenkins-job.model";
 import {JenkinsJobResult} from "../../../shared/models/jenkins-job-result.enum";
@@ -94,27 +94,19 @@ export class JenkinsJobUiTestComponent implements OnInit, OnDestroy {
     return this.datePipe.transform(this.uiTestStatus.startedAt, "medium");
   }
 
-  public get estimateTime(): string {
+  public get estimateTime(): number {
     if (!this.uiTestStatus || !this.uiTestStatus.startedAt) {
-      return "";
+      return 0;
     }
 
-    let differenceMilliseconds: number = Date.now() - this.uiTestStatus.startedAt;
+    let differenceMilliseconds: number = this.uiTestStatus.dateNow - this.uiTestStatus.startedAt;
     if (differenceMilliseconds <= 0 ||
       this.uiTestStatus.estimateDuration <= 0 ||
       this.uiTestStatus.estimateDuration <= differenceMilliseconds) {
-      return 0 + "s";
+      return 0;
     }
 
-    let currentDuration: number = (this.uiTestStatus.estimateDuration - differenceMilliseconds) / 1000;
-    let days: number = Math.floor(currentDuration / (3600*24));
-    currentDuration -= days * 3600 * 24;
-
-    let hours: number = Math.floor(currentDuration / 3600);
-    currentDuration -= hours * 3600;
-
-    let minutes: number = Math.floor(currentDuration / 60);
-    return (hours === 0 ? "" : hours + "h ") + minutes + "m";
+    return this.uiTestStatus.estimateDuration - differenceMilliseconds;
   }
 
   /**
@@ -127,7 +119,8 @@ export class JenkinsJobUiTestComponent implements OnInit, OnDestroy {
   /**
    * Initialize new instance of JenkinsJobUiTestComponent
    *
-   * @param jenkinsJobService - the JenkinsJobsService instance
+   * @param jenkinsJobService - the JenkinsJobsService instance.
+   * @param datePipe - the DatePipe instance.
    */
   constructor(private jenkinsJobService: JenkinsJobsService, private datePipe: DatePipe) {
   }

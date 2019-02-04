@@ -18,5 +18,6 @@ public class JenkinsJobModel {
     private String result;
     private long startedAt;
     private String url;
+    private JenkinsFolder folder;
 
 }

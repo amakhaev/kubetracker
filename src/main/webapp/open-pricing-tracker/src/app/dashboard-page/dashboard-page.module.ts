@@ -8,24 +8,32 @@ import {PodItemComponent} from "./pod-status-widget/pod-item.component";
 import {JenkinsJobUiTestComponent} from "./ui-test-widget/jenkins-job-ui-test/jenkins-job-ui-test.component";
 import {UiTestWidgetComponent} from "./ui-test-widget/ui-test-widget.component";
 import {DatePipe} from "@angular/common";
+import {ActiveBuildsWidgetComponent} from "./active-builds-widget/active-builds-widget.component";
+import {AgePipe} from "../shared/formatter/age-pipe";
+import {OpenPricingSharedModule} from "../shared/open-pricing-shared.module";
+import {ActiveBuildItemComponent} from "./active-builds-widget/active-build-item.component";
 
 @NgModule({
   imports: [
     DataViewModule,
     ScrollPanelModule,
     BrowserModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    OpenPricingSharedModule
   ],
   declarations: [
     DashboardComponent,
     PodStatusWidgetComponent,
     PodItemComponent,
     JenkinsJobUiTestComponent,
-    UiTestWidgetComponent
+    UiTestWidgetComponent,
+    ActiveBuildsWidgetComponent,
+    ActiveBuildItemComponent
   ],
   providers: [
     DashboardComponent,
-    DatePipe
+    DatePipe,
+    AgePipe
   ],
   exports: [
     DashboardComponent
@@ -34,7 +42,9 @@ import {DatePipe} from "@angular/common";
     PodStatusWidgetComponent,
     PodItemComponent,
     JenkinsJobUiTestComponent,
-    UiTestWidgetComponent
+    UiTestWidgetComponent,
+    ActiveBuildsWidgetComponent,
+    ActiveBuildItemComponent
   ],
   bootstrap: []
 })

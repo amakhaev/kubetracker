@@ -16,7 +16,7 @@
   <label *ngIf="result === jenkinsJobResult.IN_PROGRESS"
          [ngClass]="{'clickable': isClickable}"
          class="estimate-time"
-  >Estimate time: {{estimateTime}}</label>
+  >Estimate time: {{estimateTime | agePipe}}</label>
 </ng-template>
 
 <ng-template #noData>

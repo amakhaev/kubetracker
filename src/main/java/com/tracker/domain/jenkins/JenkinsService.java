@@ -1,5 +1,7 @@
 package com.tracker.domain.jenkins;
 
+import java.util.List;
+
 /**
  * Provides the service for working with jenkins
  */
@@ -13,5 +15,10 @@ public interface JenkinsService {
      * @return the {@link JenkinsJobModel} instance
      */
     JenkinsJobModel getTestJobStatus(JenkinsJobEnvironment environment, JenkinsJobTestSuite testType);
+
+    /**
+     * Gets the list of active builds from Ods-Pipeline and Pricing
+     */
+    List<JenkinsJobModel> getActiveBuilds();
 
 }

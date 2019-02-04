@@ -13,6 +13,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * REST API controller representing methods for working with settings.
  */
@@ -52,6 +54,21 @@ public class JenkinsController {
             @ApiParam(value = "The suite of tests that were ran") @RequestParam(name = "suite") JenkinsJobTestSuite suite
     ) {
         return ResponseEntity.ok(this.dtoMapper.modelToDto(this.jenkinsService.getTestJobStatus(environment, suite)));
+    }
+
+    /**
+     * Gets the list of jobs that built in current moment
+     *
+     * @return ResponseEntity<JenkinsJobDto> object
+     */
+    @ApiOperation("Gets the list of jobs that built in present")
+    @RequestMapping(
+            path = "active_builds",
+            method = RequestMethod.GET
+    )
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<List<JenkinsJobDto>> getActiveBuilds() {
+        return ResponseEntity.ok(this.dtoMapper.modelsToDtos(this.jenkinsService.getActiveBuilds()));
     }
 
 }

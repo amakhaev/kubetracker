@@ -6,7 +6,8 @@ export const environment = {
     settings: "/settings",
     pods: "/pods",
     filters: "/filters",
-    jenkinsJobUiTest: "/jenkins/ui_test"
+    jenkinsJobUiTest: "/jenkins/ui_test",
+    jenkinsJobActiveBuilds: "/jenkins/active_builds"
   },
 
   navigation: {

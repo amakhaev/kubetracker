@@ -36,4 +36,18 @@ export class JenkinsJobsService {
     });
   };
 
+  /**
+   * Retrieves the list of active build for specific folder
+   */
+  public retrieveActiveBuildJobs(): Promise<JenkinsJobModel[]> {
+    return new Promise((resolve, reject) => {
+      this.http.get(environment.baseApiUrl + environment.urls.jenkinsJobActiveBuilds).subscribe(
+        data => {
+          let activeBuildJobs: JenkinsJobModel[] = <JenkinsJobModel[]>data;
+          resolve(activeBuildJobs.map(ab => Deserialize(ab, JenkinsJobModel)));
+        },
+        err => reject(err)
+      );
+    });
+  };
 }

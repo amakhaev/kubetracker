@@ -1,7 +1,7 @@
 @import "../../../../styles/variables";
+@import "../../../../styles/animation-pulse";
 
 $colorBlue: #83b7df;
-$colorGray: #ccc5c5;
 $width: 300px;
 $height: 200px;
 
@@ -52,21 +52,4 @@ $height: 200px;
 
 .clickable {
   cursor: pointer;
-}
-
-@keyframes pulse {
-  0% {
-    background: $colorGray;
-    transform: scale(1);
-  }
-
-  50% {
-    background: $green;
-    transform: scale(1);
-  }
-
-  100% {
-    background: $colorGray;
-    transform: scale(1);
-  }
 }

@@ -1,5 +1,6 @@
 package com.tracker.api.jenkins;
 
+import com.tracker.domain.jenkins.JenkinsFolder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,5 +19,6 @@ public class JenkinsJobDto {
     private String result;
     private long startedAt;
     private String url;
+    private JenkinsFolder folder;
 
 }

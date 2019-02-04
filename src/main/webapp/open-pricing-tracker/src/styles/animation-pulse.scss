@@ -1,0 +1,18 @@
+@import "variables";
+
+@keyframes pulse {
+  0% {
+    background: $colorGray;
+    transform: scale(1);
+  }
+
+  50% {
+    background: $green;
+    transform: scale(1);
+  }
+
+  100% {
+    background: $colorGray;
+    transform: scale(1);
+  }
+}

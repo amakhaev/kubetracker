@@ -4,8 +4,8 @@
 .dashboard {
   display: flex;
 
-  .pods-widget-container {
-    width: 1000px;
+  .pods-widget-container, .active-build-widget-container {
+    width: 700px;
     margin-right: $marginNormal;
   }
 }

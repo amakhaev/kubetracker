@@ -1,9 +1,10 @@
 @import "../../../styles/variables";
 
-.pod-item {
+.build-item {
+  width: 100%;
   margin-bottom: $marginSmall;
-  margin-left: 15px;
-  padding: 10px;
+  padding: $marginSmall;
+  background-color: $colorGray;
 
   .title {
     font-size: $fontSizeNormal;
@@ -13,10 +14,7 @@
 
   .state {
     display: flex;
-
-    div {
-      width: 33%;
-    }
+    justify-content: space-between;
 
     .name {
       font-size: $fontSizeSmall;
@@ -29,10 +27,6 @@
   }
 }
 
-.pod-item-green {
-  background-color: $lightGreen;
-}
-
-.pod-item-red {
-  background-color: $red;
+.build-item:hover {
+  cursor: pointer;
 }
