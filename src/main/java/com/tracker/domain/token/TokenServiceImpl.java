@@ -149,19 +149,10 @@ public class TokenServiceImpl implements TokenService {
     }
 
     private boolean isNeedToReLogin() {
-        if (this.tokenCreatedAt == null || this.tokenModel == null) {
-            return true;
-        }
+        return this.tokenCreatedAt == null ||
+                this.tokenModel == null ||
+                ChronoUnit.HOURS.between(LocalTime.now(), this.tokenCreatedAt) >= 3;
 
-        int expiredTimeInSecond;
-        try {
-            expiredTimeInSecond = Integer.parseInt(this.tokenModel.getRefreshExpiresIn());
-        } catch (NumberFormatException e) {
-            log.error("Can't parse token expiration time as integer. Current value: " + this.tokenModel.getRefreshExpiresIn());
-            return true;
-        }
-
-        return ChronoUnit.SECONDS.between(this.tokenCreatedAt, LocalTime.now()) >= expiredTimeInSecond - 5;
     }
 
     private boolean isNeedToRefresh() {

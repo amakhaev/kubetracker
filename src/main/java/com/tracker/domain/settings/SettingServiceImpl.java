@@ -47,6 +47,10 @@ public class SettingServiceImpl implements SettingService {
     @Override
     public SettingsModel updateSettings(SettingsModel settingsModel) {
         try {
+            if (settingsModel.getPassword() == null) {
+                settingsModel.setPassword(this.getSettings().getPassword());
+            }
+
             return this.mapper.entityToModel(
                     this.settingsDao.update(this.mapper.modelToEntity(settingsModel))
             );

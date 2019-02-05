@@ -1,0 +1,54 @@
+@import "../../../../styles/variables";
+@import "../../../../styles/animation-pulse";
+
+$width: 300px;
+$height: 200px;
+
+.status-container {
+  background-color: $colorGray;
+  width: $width;
+  height: $height;
+  margin: 0 $marginSmall $marginSmall;
+
+  .ui-test-status {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: $width;
+    height: $height;
+
+    .no-data, .title {
+      font-size: $fontSizeLarge;
+      font-weight: $font-weight-bold;
+    }
+
+    .start-date, .estimate-time {
+      font-size: $fontSizeNormal;
+    }
+
+    .estimate-time {
+      margin-top: $marginSmall;
+    }
+  }
+
+  .success {
+    background-color: $colorBlue;
+  }
+
+  .failure {
+    background-color: $red;
+  }
+
+  .not-built, .aborted {
+    background-color: $colorGray;
+  }
+
+  .in-progress {
+    animation: 2s ease infinite pulse;
+  }
+}
+
+.clickable {
+  cursor: pointer;
+}

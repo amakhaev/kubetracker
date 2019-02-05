@@ -1,0 +1,24 @@
+@import "../../../styles/widget-header";
+
+.active-builds {
+  width: 100%;
+  min-width: 700px;
+  border: 1px solid $primaryDark;
+  border-radius: 5px;
+  margin-bottom: $marginNormal;
+
+  .header {
+    @extend .widget-header;
+  }
+
+  .active-build-items {
+    /deep/ .ui-dataview-header {
+      display: none;
+    }
+
+    /deep/ .ui-dataview-content {
+      border: none;
+      padding: 0;
+    }
+  }
+}

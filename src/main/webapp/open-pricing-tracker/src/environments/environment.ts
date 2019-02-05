@@ -4,19 +4,22 @@
 
 export const environment = {
   production: false,
-  baseApiUrl: "http://localhost:6547/kubetracker",
+  baseApiUrl: "http://localhost:6545/kubetracker",
 
   urls: {
     settings: "/settings",
     pods: "/pods",
     filters: "/filters",
+    jenkinsJobUiTest: "/jenkins/ui_test",
+    jenkinsJobActiveBuilds: "/jenkins/active_builds",
+    jenkinsJobLastBuilds: "/jenkins/completed_builds"
   },
 
   navigation: {
     dashboard: "/dashboard",
     settings: "/settings",
     filters: "/filters",
-    swagger: "http://localhost:6547/swagger-ui.html"
+    swagger: "http://localhost:6545/swagger-ui.html"
   }
 };
 

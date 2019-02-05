@@ -1,3 +1,10 @@
-.dashboard {
+@import "../../styles/variables";
+@import "../../styles/common";
 
+.dashboard {
+  display: flex;
+
+  .pods-widget-container, .active-build-widget-container {
+    margin-right: $marginNormal;
+  }
 }

@@ -1,7 +1,5 @@
 package com.tracker.domain;
 
-import org.mapstruct.Mapper;
-
 import java.util.List;
 
 /**

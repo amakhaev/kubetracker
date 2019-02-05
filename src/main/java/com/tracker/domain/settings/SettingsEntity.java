@@ -33,6 +33,11 @@ public class SettingsEntity {
      */
     public static final String PASSWORD_FIELD = "password";
 
+    /**
+     * Provides the jenkins api token field name.
+     */
+    public static final String JENKINS_API_TOKEN_FIELD = "jenkins_api_token";
+
     @DatabaseField(columnName = ID_FIELD, generatedId = true)
     private int id;
 
@@ -44,4 +49,7 @@ public class SettingsEntity {
 
     @DatabaseField(columnName = PASSWORD_FIELD)
     private String password;
+
+    @DatabaseField(columnName = JENKINS_API_TOKEN_FIELD)
+    private String jenkinsApiToken;
 }

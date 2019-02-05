@@ -14,6 +14,11 @@ public class ApiLocations {
     public static final String ROOT = "/kubetracker";
 
     /**
+     * Provides the jenkins URL
+     */
+    public static final String JENKINS = ROOT + "/jenkins";
+
+    /**
      * Provides the settings URL
      */
     public static final String SETTINGS = ROOT + "/settings";

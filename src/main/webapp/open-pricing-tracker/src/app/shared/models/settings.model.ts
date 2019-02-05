@@ -15,4 +15,7 @@ export class SettingsModel {
 
   @autoserialize
   public password: string;
+
+  @autoserialize
+  public jenkinsApiToken: string;
 }

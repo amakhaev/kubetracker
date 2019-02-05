@@ -1,22 +1,48 @@
 <div class="settings-page">
   <h1>Settings</h1>
 
-  <span class="ui-float-label input-field">
-    <input id="full-name-input" type="text" size="128" [(ngModel)]="settings.fullName" pInputText>
-    <label for="full-name-input">Full name</label>
-  </span>
+  <p-fieldset legend="Common" [toggleable]="true">
+    <div class="text-input">
+      <span class="ui-float-label input-field">
+        <input id="full-name-input" type="text" size="128" [(ngModel)]="settings.fullName" pInputText>
+        <label for="full-name-input">Full name</label>
+      </span>
+    </div>
+  </p-fieldset>
 
-  <span class="ui-float-label input-field">
-    <input id="short-name-input" type="text" size="128" [(ngModel)]="settings.shortName" pInputText>
-    <label for="short-name-input">Short name</label>
-  </span>
+  <div class="horizontal-divider"></div>
 
-  <div class="input-field">
-    <input pPassword type="password" [feedback]="false" [(ngModel)]="settings.password"/>
-  </div>
+  <p-fieldset legend="Kubernetes" [toggleable]="true">
+    <div class="text-input">
+      <span class="ui-float-label input-field">
+        <input id="short-name-input" type="text" size="128" [(ngModel)]="settings.shortName" pInputText>
+        <label for="short-name-input">Short name</label>
+      </span>
+
+      <div class="input-field">
+        <span class="ui-float-label input-field">
+          <input pPassword id="password-input" type="password" [feedback]="false" [(ngModel)]="settings.password"/>
+          <label for="password-input">Password</label>
+        </span>
+      </div>
+    </div>
+  </p-fieldset>
+
+  <div class="horizontal-divider"></div>
+
+  <p-fieldset legend="Jenkins" [toggleable]="true">
+    <div class="text-input">
+      <span class="ui-float-label input-field">
+        <input id="jenkins-token-input" type="text" size="128" [(ngModel)]="settings.jenkinsApiToken" pInputText>
+        <label for="jenkins-token-input">Jenkins api token</label>
+      </span>
+    </div>
+  </p-fieldset>
+
+  <div class="horizontal-divider"></div>
 
   <div class="buttons">
-    <button pButton type="button" label="Save" (click)="onSaveClick($event)"></button>
-    <button pButton type="button" label="Cancel" class="ui-button-secondary" (click)="onCancelClick($event)"></button>
+    <button pButton type="button" label="Save" (click)="onSaveClick()"></button>
+    <button pButton type="button" label="Cancel" class="ui-button-secondary" (click)="onCancelClick()"></button>
   </div>
 </div>
