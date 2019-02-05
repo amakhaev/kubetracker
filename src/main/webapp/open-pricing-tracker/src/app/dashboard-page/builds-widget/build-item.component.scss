@@ -1,0 +1,40 @@
+@import "../../../styles/variables";
+@import "../../../styles/status-colors";
+
+.build-item {
+  width: 100%;
+  margin-bottom: $marginSmall;
+  background-color: $colorGray;
+
+  .content {
+    padding: $marginSmall;
+
+    .title {
+      font-size: $fontSizeNormal;
+      margin-bottom: $marginNormal;
+      font-weight: $font-weight-bold;
+    }
+
+    .state {
+      display: flex;
+      justify-content: space-between;
+
+      .name {
+        font-size: $fontSizeSmall;
+        font-weight: $font-weight-bold;
+      }
+
+      .value {
+        font-size: $fontSizeNormal;
+      }
+    }
+  }
+
+  .success {
+    background-color: $lightGreen;
+  }
+}
+
+.build-item:hover {
+  cursor: pointer;
+}

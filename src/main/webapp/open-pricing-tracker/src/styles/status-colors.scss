@@ -1,0 +1,18 @@
+@import "variables";
+@import "animation-pulse";
+
+.success {
+  background-color: $colorBlue;
+}
+
+.failure {
+  background-color: $red;
+}
+
+.not-built, .aborted {
+  background-color: $colorGray;
+}
+
+.in-progress {
+  animation: 2s ease infinite pulse;
+}

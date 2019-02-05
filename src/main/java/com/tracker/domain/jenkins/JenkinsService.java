@@ -21,4 +21,17 @@ public interface JenkinsService {
      */
     List<JenkinsJobModel> getActiveBuilds();
 
+    /**
+     * Gets the last @code count completed builds
+     *
+     * @param count - the count of builds
+     * @return List of {@link JenkinsJobModel}
+     */
+    List<JenkinsJobModel> getLastCompletedBuilds(int count);
+
+    /**
+     * Synchronizes all jobs from jenkins
+     */
+    void synchronizeJobs();
+
 }

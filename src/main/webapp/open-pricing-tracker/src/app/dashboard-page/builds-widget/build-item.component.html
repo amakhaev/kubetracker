@@ -1,0 +1,21 @@
+<div class="build-item" (click)="onClick()">
+  <div class="content" [ngClass]="{
+      'success': result === jenkinsJobResult.SUCCESS,
+      'failure': result === jenkinsJobResult.FAILURE,
+      'not-built': result === jenkinsJobResult.NOT_BUILT,
+      'aborted': result === jenkinsJobResult.ABORTED,
+      'in-progress': result === jenkinsJobResult.IN_PROGRESS
+    }">
+    <div *ngIf="buildItem" class="title">{{buildItem.name}} ({{buildItem.folder}})</div>
+    <div class="state">
+      <div class="middle-size">
+        <label class="name">Started at: </label>
+        <label *ngIf="buildItem.dateStartedAt" class="value">{{buildItem.dateStartedAt | date:'medium'}}</label>
+      </div>
+      <div *ngIf="isEstimateTimeAvailable" class="middle-size">
+        <label class="name">Estimate time: </label>
+        <label *ngIf="buildItem" class="value">{{estimateTime | agePipe}}</label>
+      </div>
+    </div>
+  </div>
+</div>

@@ -20,4 +20,7 @@ public class JenkinsJobModel {
     private String url;
     private JenkinsFolder folder;
 
+    public long getFinishedAt() {
+        return this.startedAt + this.duration;
+    }
 }

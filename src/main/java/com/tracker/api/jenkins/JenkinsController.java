@@ -71,4 +71,21 @@ public class JenkinsController {
         return ResponseEntity.ok(this.dtoMapper.modelsToDtos(this.jenkinsService.getActiveBuilds()));
     }
 
+    /**
+     * Gets the list of jobs that built in current moment
+     *
+     * @return ResponseEntity<JenkinsJobDto> object
+     */
+    @ApiOperation("Gets the list of last jobs that built")
+    @RequestMapping(
+            path = "completed_builds",
+            method = RequestMethod.GET
+    )
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<List<JenkinsJobDto>> getCompletedBuilds(
+            @ApiParam(value = "The count of built that should be return") @RequestParam(name = "count", defaultValue = "10") int count
+    ) {
+        return ResponseEntity.ok(this.dtoMapper.modelsToDtos(this.jenkinsService.getLastCompletedBuilds(count)));
+    }
+
 }

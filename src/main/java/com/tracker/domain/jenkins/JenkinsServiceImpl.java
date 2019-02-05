@@ -16,10 +16,11 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
 /**
@@ -29,7 +30,9 @@ import java.util.stream.Collectors;
 @Slf4j
 public class JenkinsServiceImpl implements JenkinsService {
 
-    private static final String JOB_NAME = "Pricing";
+    private static final String UI_TEST_JOB_NAME = "Pricing";
+
+    private List<JenkinsJobModel> cachedJenkinsJobs;
 
     private final String devSmokeTestsUrl;
     private final String devEndToEndTestsUrl;
@@ -39,6 +42,7 @@ public class JenkinsServiceImpl implements JenkinsService {
     private final String odsPipelineFolderUrl;
 
     private final SettingService settingService;
+    private final ExecutorService executorService;
 
     /**
      * Initialize new instance of {@link JenkinsServiceImpl}
@@ -50,7 +54,8 @@ public class JenkinsServiceImpl implements JenkinsService {
                               @Value("${jenkins.qa_e2e_test_url}") String qaEndToEndTestsUrl,
                               @Value("${jenkins.plan_folder_url}") String planFolderUrl,
                               @Value("${jenkins.ods_pipeline_folder_url}") String odsPipelineFolderUrl,
-                              SettingService settingService) {
+                              SettingService settingService,
+                              ExecutorService executorService) {
         this.settingService = settingService;
         this.devSmokeTestsUrl = devSmokeTestsUrl;
         this.devEndToEndTestsUrl = devEndToEndTestsUrl;
@@ -58,6 +63,7 @@ public class JenkinsServiceImpl implements JenkinsService {
         this.qaEndToEndTestsUrl = qaEndToEndTestsUrl;
         this.planFolderUrl = planFolderUrl;
         this.odsPipelineFolderUrl = odsPipelineFolderUrl;
+        this.executorService = executorService;
     }
 
     /**
@@ -94,72 +100,74 @@ public class JenkinsServiceImpl implements JenkinsService {
      */
     @Override
     public List<JenkinsJobModel> getActiveBuilds() {
-        log.info("Try to get active builds");
-        List<JenkinsJobModel> result = new ArrayList<>();
-
-        SettingsModel settingsModel = this.settingService.getSettings();
-        try {
-            JenkinsServer jenkinsServer = new JenkinsServer(
-                    new URI(this.planFolderUrl), settingsModel.getFullName(), settingsModel.getJenkinsApiToken()
-            );
-
-            log.info("Retrieve active builds for {}", JenkinsFolder.PLAN);
-            result.addAll(this.findActiveBuilds(jenkinsServer.getJobs(), JenkinsFolder.PLAN));
-
-            jenkinsServer = new JenkinsServer(
-                    new URI(this.odsPipelineFolderUrl), settingsModel.getFullName(), settingsModel.getJenkinsApiToken()
-            );
-
-            log.info("Retrieve active builds for {}", JenkinsFolder.ODS_PIPELINE);
-            result.addAll(this.findActiveBuilds(jenkinsServer.getJobs(), JenkinsFolder.ODS_PIPELINE));
-        } catch (HttpResponseException e) {
-            if (e.getStatusCode() == 401) {
-                throw new UnauthorizedException(e.getMessage());
-            }
-        } catch (URISyntaxException | IOException e) {
-            log.error(e.getMessage());
-            return null;
+        log.info("Try to get active builds from cache");
+        if (this.cachedJenkinsJobs == null) {
+            log.info("Cache is empty");
+            return Collections.emptyList();
         }
 
-        return result;
+        return this.cachedJenkinsJobs.stream()
+                .filter(jenkinsJobModel -> jenkinsJobModel.getResult() == null)
+                .collect(Collectors.toList());
     }
 
-    private List<JenkinsJobModel> findActiveBuilds(Map<String, Job> jobs, JenkinsFolder folder) {
-        if (jobs == null || jobs.isEmpty()) {
-            return new ArrayList<>();
+    /**
+     * Gets the last @code count completed builds
+     *
+     * @param count - the count of builds
+     * @return List of {@link JenkinsJobModel}
+     */
+    @Override
+    public List<JenkinsJobModel> getLastCompletedBuilds(int count) {
+        log.info("Try to get last completed builds from cache");
+        if (this.cachedJenkinsJobs == null) {
+            log.info("Cache is empty");
+            return Collections.emptyList();
         }
 
-        List<JenkinsJobModel> result = new ArrayList<>();
-        jobs.entrySet()
-                .parallelStream()
-                .forEach(entry -> {
-                    try {
-                        JobWithDetails jobWithDetails = entry.getValue().details();
-                        if (jobWithDetails == null) {
-                            return;
-                        }
+        return this.cachedJenkinsJobs.stream()
+                .filter(jenkinsJobModel -> jenkinsJobModel.getResult() != null)
+                .sorted(Comparator.comparing(JenkinsJobModel::getFinishedAt).reversed())
+                .limit(count)
+                .collect(Collectors.toList());
+    }
 
-                        Build lastBuild = jobWithDetails.getLastBuild();
-                        if (lastBuild == null) {
-                            return;
-                        }
+    /**
+     * Synchronizes all jobs from jenkins
+     */
+    @Override
+    public void synchronizeJobs() {
+        log.info("Start synchronization");
+        List<Callable<JenkinsJobModel>> tasks = null;
+        try {
+            tasks = this.getTasksForPlanAndPipelineJobs();
+        } catch (URISyntaxException | IOException e) {
+            log.error(e.getMessage());
+            this.cachedJenkinsJobs = Collections.emptyList();
+            return;
+        }
 
-                        BuildWithDetails buildWithDetails = lastBuild.details();
-                        if (buildWithDetails == null) {
-                            return;
+        try {
+            List<Future<JenkinsJobModel>> futures = this.executorService.invokeAll(tasks);
+            log.info("{} jobs retrieved", futures.size());
+            List<JenkinsJobModel> jobsToReplace = futures.stream()
+                    .map((future) -> {
+                        try {
+                            return future.get();
+                        } catch (InterruptedException | ExecutionException e) {
+                            log.error(e.getMessage());
+                            return null;
                         }
+                    })
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
 
-                        BuildResult buildResult = buildWithDetails.getResult();
-                        if (buildResult == null) {
-                            log.info("Found active build: {}", entry.getKey());
-                            result.add(this.createJobModel(jobWithDetails, folder));
-                        }
-                    } catch (IOException e) {
-                        log.error(e.getMessage());
-                    }
-                });
-
-        return result;
+            this.cachedJenkinsJobs = Collections.synchronizedList(jobsToReplace);
+            log.info("Synchronization completed. Saved item count: {}", futures.size());
+        } catch (InterruptedException e) {
+            log.error(e.getMessage());
+            this.cachedJenkinsJobs = Collections.emptyList();
+        }
     }
 
     private JenkinsJobModel getUiTestJenkinsJob(String url, JenkinsFolder folder) {
@@ -169,7 +177,7 @@ public class JenkinsServiceImpl implements JenkinsService {
             JenkinsServer jenkinsServer = new JenkinsServer(
                     new URI(url), settingsModel.getFullName(), settingsModel.getJenkinsApiToken()
             );
-            jobWithDetails = jenkinsServer.getJob(JOB_NAME);
+            jobWithDetails = jenkinsServer.getJob(UI_TEST_JOB_NAME);
         } catch (HttpResponseException e) {
             throw new UnauthorizedException(e.getMessage());
         } catch (URISyntaxException | IOException e) {
@@ -182,7 +190,7 @@ public class JenkinsServiceImpl implements JenkinsService {
 
     private JenkinsJobModel createJobModel(JobWithDetails jobWithDetails, JenkinsFolder folder) {
         if (jobWithDetails == null) {
-            throw new EntityNotFoundException("Failed to find the job");
+            throw new EntityNotFoundException("Failed to create the job");
         }
 
         Build lastBuild = jobWithDetails.getLastBuild();
@@ -208,5 +216,34 @@ public class JenkinsServiceImpl implements JenkinsService {
         }
 
         return jenkinsJobModel;
+    }
+
+    private List<Callable<JenkinsJobModel>> getTasksForPlanAndPipelineJobs() throws URISyntaxException, IOException {
+        SettingsModel settingsModel = this.settingService.getSettings();
+        List<Callable<JenkinsJobModel>> tasks = new ArrayList<>();
+        JenkinsServer jenkinsServer = new JenkinsServer(
+                new URI(this.planFolderUrl), settingsModel.getFullName(), settingsModel.getJenkinsApiToken()
+        );
+
+        log.info("Create callable tasks for {} folder", JenkinsFolder.PLAN);
+        tasks.addAll(jenkinsServer.getJobs().entrySet()
+                .stream()
+                .map(entry -> (Callable<JenkinsJobModel>) () -> this.createJobModel(entry.getValue().details(), JenkinsFolder.PLAN))
+                .collect(Collectors.toList())
+        );
+
+        jenkinsServer = new JenkinsServer(
+                new URI(this.odsPipelineFolderUrl), settingsModel.getFullName(), settingsModel.getJenkinsApiToken()
+        );
+
+        log.info("Create callable tasks for {} folder", JenkinsFolder.ODS_PIPELINE);
+        tasks.addAll(jenkinsServer.getJobs().entrySet()
+                .stream()
+                .map(entry -> (Callable<JenkinsJobModel>) () -> this.createJobModel(entry.getValue().details(), JenkinsFolder.ODS_PIPELINE))
+                .collect(Collectors.toList())
+        );
+
+        log.info("All tasks created successfully, size: {}", tasks.size());
+        return tasks;
     }
 }

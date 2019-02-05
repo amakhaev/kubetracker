@@ -7,7 +7,8 @@ export const environment = {
     pods: "/pods",
     filters: "/filters",
     jenkinsJobUiTest: "/jenkins/ui_test",
-    jenkinsJobActiveBuilds: "/jenkins/active_builds"
+    jenkinsJobActiveBuilds: "/jenkins/active_builds",
+    jenkinsJobLastBuilds: "/jenkins/completed_builds"
   },
 
   navigation: {

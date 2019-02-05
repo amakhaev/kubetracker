@@ -37,11 +37,29 @@ export class JenkinsJobsService {
   };
 
   /**
-   * Retrieves the list of active build for specific folder
+   * Retrieves the list of active build
    */
   public retrieveActiveBuildJobs(): Promise<JenkinsJobModel[]> {
     return new Promise((resolve, reject) => {
       this.http.get(environment.baseApiUrl + environment.urls.jenkinsJobActiveBuilds).subscribe(
+        data => {
+          let activeBuildJobs: JenkinsJobModel[] = <JenkinsJobModel[]>data;
+          resolve(activeBuildJobs.map(ab => Deserialize(ab, JenkinsJobModel)));
+        },
+        err => reject(err)
+      );
+    });
+  };
+
+  /**
+   * Retrieves the list of last builds
+   */
+  public retrieveLastBuildJobs(count: number): Promise<JenkinsJobModel[]> {
+    return new Promise((resolve, reject) => {
+      let params = new HttpParams();
+      params = params.append("count", count.toLocaleString());
+
+      this.http.get(environment.baseApiUrl + environment.urls.jenkinsJobLastBuilds, {params}).subscribe(
         data => {
           let activeBuildJobs: JenkinsJobModel[] = <JenkinsJobModel[]>data;
           resolve(activeBuildJobs.map(ab => Deserialize(ab, JenkinsJobModel)));
