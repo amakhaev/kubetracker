@@ -22,7 +22,7 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
 group 'openPricingTracker'
-version '1.2'
+version '1.3'
 
 mainClassName = 'com.tracker.OpenPricingTrackerApplication'
 sourceCompatibility = sourceCompatibility = JavaVersion.VERSION_1_8
