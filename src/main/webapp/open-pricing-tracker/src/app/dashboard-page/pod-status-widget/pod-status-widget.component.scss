@@ -1,13 +1,42 @@
 @import "../../../styles/variables";
 @import "../../../styles/widget-header";
+@import "../../../styles/common";
 
-.pod-status-widget {
+.minimum-pod-status-widget {
+  border: 1px solid $primaryDark;
+  border-radius: 5px;
+  width: $tileWidth + $marginSmall * 2 + 2px; // 2px is border
+
+  .minimum-header {
+    @extend .minimum-widget-header;
+    justify-content: space-between;
+
+    .actions {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  .tile:hover {
+    cursor: pointer;
+  }
+
+  .success {
+    background: $lightGreen;
+  }
+
+  .failed {
+    background: $red;
+  }
+}
+
+.maximum-pod-status-widget {
   width: 100%;
   min-width: 1000px;
   border: 1px solid $primaryDark;
   border-radius: 5px;
 
-  .header {
+  .maximum-header {
     @extend .widget-header;
     justify-content: space-between;
 

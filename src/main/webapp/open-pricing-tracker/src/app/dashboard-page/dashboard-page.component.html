@@ -10,7 +10,8 @@
     <ui-test-widget [environment]="'qa'"></ui-test-widget>
   </div>
   <div class="active-build-widget-container">
-    <active-builds [retrieveStrategy]="activeBuildsRetrieveStrategy"></active-builds>
-    <active-builds [retrieveStrategy]="lastBuildsRetrieveStrategy"></active-builds>
+    <active-builds [retrieveStrategy]="activeBuildsRetrieveStrategy" [widgetData]="activeBuildsWidgetData"></active-builds>
+    <div class="horizontal-divider"></div>
+    <active-builds [retrieveStrategy]="lastBuildsRetrieveStrategy" [widgetData]="lastBuildsWidgetData"></active-builds>
   </div>
 </div>

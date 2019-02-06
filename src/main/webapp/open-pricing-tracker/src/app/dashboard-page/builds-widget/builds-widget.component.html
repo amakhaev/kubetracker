@@ -1,19 +1,39 @@
-<div class="active-builds">
-  <div class="header">
-    <label class="title">{{retrieveStrategy.getTitle()}}</label>
+<ng-container *ngIf="currentContainerState === containerState.MAXIMUM; then maximumState; else minimumState"></ng-container>
+
+<ng-template #minimumState>
+  <div class="builds-minimal-container">
+    <div class="header">
+      <label class="title">{{widgetData.getTitle()}}</label>
+      <container-size [state]="currentContainerState" (onStateChanged)="onStateChanged($event)"></container-size>
+    </div>
+
+    <div class="tile"
+         [ngClass]="styleClass"
+         (click)="onStateChanged(containerState.MAXIMUM)">
+      <label>{{minimalContainerMessage}}</label>
+    </div>
   </div>
+</ng-template>
 
-  <div class="active-build-items">
-    <p-scrollPanel [style]="{width: '100%', height: '540px'}">
-      <p-dataView #dv [value]="activeBuilds" [paginator]="false" [lazy]="true">
+<ng-template #maximumState>
+  <div class="builds-maximum-container">
+    <div class="header">
+      <label class="title">{{widgetData.getTitle()}}</label>
+      <container-size [state]="currentContainerState" (onStateChanged)="onStateChanged($event)"></container-size>
+    </div>
 
-        <ng-template let-build pTemplate="listItem">
-          <div>
-            <active-build-item [buildItem]="build"></active-build-item>
-          </div>
-        </ng-template>
+    <div class="active-build-items">
+      <p-scrollPanel [style]="{width: '100%', height: '540px'}">
+        <p-dataView #dv [value]="activeBuilds" [paginator]="false" [lazy]="true">
 
-      </p-dataView>
-    </p-scrollPanel>
+          <ng-template let-build pTemplate="listItem">
+            <div>
+              <active-build-item [buildItem]="build"></active-build-item>
+            </div>
+          </ng-template>
+
+        </p-dataView>
+      </p-scrollPanel>
+    </div>
   </div>
-</div>
+</ng-template>

@@ -1,0 +1,4 @@
+<div class="container-size-state">
+  <i *ngIf="isMaximumStateAvailable" class="pi pi-window-minimize" (click)="onIconClick(containerState.MINIMAL)"></i>
+  <i *ngIf="isMinimalStateAvailable" class="pi pi-window-maximize" (click)="onIconClick(containerState.MAXIMUM)"></i>
+</div>

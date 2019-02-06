@@ -5,13 +5,15 @@ import {BrowserModule} from "@angular/platform-browser";
 import {FilterService} from "./services/filter.service";
 import {JenkinsJobsService} from "./services/jenkins-jobs.service";
 import {AgePipe} from "./formatter/age-pipe";
+import {ContainerSizeComponent} from "./components/container-size/container-size.component";
 
 @NgModule({
   imports: [
     BrowserModule
   ],
   declarations: [
-    AgePipe
+    AgePipe,
+    ContainerSizeComponent
   ],
   providers: [
     SettingsService,
@@ -21,7 +23,8 @@ import {AgePipe} from "./formatter/age-pipe";
     AgePipe
   ],
   exports: [
-    AgePipe
+    AgePipe,
+    ContainerSizeComponent
   ],
   bootstrap: []
 })

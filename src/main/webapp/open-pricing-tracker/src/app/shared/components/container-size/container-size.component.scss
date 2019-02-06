@@ -1,0 +1,11 @@
+@import "../../../../styles/variables";
+
+.container-size-state {
+  display: flex;
+  align-items: center;
+  font-size: $fontSizeNormal;
+}
+
+.container-size-state:hover {
+  cursor: pointer;
+}

@@ -5,11 +5,6 @@ import {JenkinsJobModel} from "../../shared/models/jenkins-job.model";
 export interface RetrieveStrategy {
 
   /**
-   * Gets the title of strategy
-   */
-  getTitle(): string;
-
-  /**
    * Retrieves the jenkins build results
    */
   retrieveBuilds(): Promise<JenkinsJobModel[]>;

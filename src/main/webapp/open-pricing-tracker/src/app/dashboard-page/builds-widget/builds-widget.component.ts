@@ -3,6 +3,8 @@ import {JenkinsJobsService} from "../../shared/services/jenkins-jobs.service";
 import {JenkinsJobModel} from "../../shared/models/jenkins-job.model";
 import {RetrieveStrategy} from "./retrieve-strategy";
 import {isNullOrUndefined} from "util";
+import {ContainerState} from "../../shared/components/container-size/container-state.enum";
+import {BuildsWidgetData} from "./builds-widget-data";
 /**
  * Provides the active builds list component
  */
@@ -21,6 +23,11 @@ export class BuildsWidgetComponent implements OnInit, OnDestroy {
   @Input() retrieveStrategy: RetrieveStrategy;
 
   /**
+   * Provides the data of widget
+   */
+  @Input() widgetData: BuildsWidgetData;
+
+  /**
    * Provides the
    */
   @Input() customHeight: number;
@@ -30,6 +37,30 @@ export class BuildsWidgetComponent implements OnInit, OnDestroy {
    */
   public activeBuilds: JenkinsJobModel[];
 
+  /**
+   * Provides the current state of container
+   */
+  public currentContainerState: ContainerState = ContainerState.MAXIMUM;
+
+  /**
+   * Provides the type of container state
+   */
+  public containerState = ContainerState;
+
+  /**
+   * Gets the style class
+   */
+  public get styleClass(): string {
+    return this.widgetData.getStyleClass(this.activeBuilds);
+  }
+
+  /**
+   * Gets the message for container in minimal state
+   */
+  public get minimalContainerMessage(): string {
+    return this.widgetData.getMessage(this.activeBuilds);
+  }
+
   public ngOnInit(): void {
     this._updateInterval = setInterval(() => { this.refreshData(); }, 15000);
     this.refreshData();
@@ -37,6 +68,15 @@ export class BuildsWidgetComponent implements OnInit, OnDestroy {
 
   public ngOnDestroy(): void {
     clearInterval(this._updateInterval);
+  }
+
+  /**
+   * Handles the changing of container state
+   *
+   * @param state - the new state of component
+   */
+  public onStateChanged(state: ContainerState): void {
+    this.currentContainerState = state;
   }
 
   private refreshData(): void {
