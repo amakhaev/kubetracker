@@ -2,6 +2,7 @@ import {Component, HostListener, Input, OnDestroy, OnInit} from "@angular/core";
 import {PodListService} from "../../shared/services/pod-list.service";
 import {PodModel} from "../../shared/models/pod.model";
 import {isNullOrUndefined} from "util";
+import {ContainerState} from "../../shared/components/container-size/container-state.enum";
 
 /**
  * Provides the widget that shown status of podList on specific environment
@@ -14,7 +15,6 @@ import {isNullOrUndefined} from "util";
 export class PodStatusWidgetComponent implements OnInit, OnDestroy {
 
   private _updateInterval: any;
-  private _lastUpdateSecondsInterval: any;
   private _windowHeight: number;
 
   /**
@@ -33,14 +33,19 @@ export class PodStatusWidgetComponent implements OnInit, OnDestroy {
   public pods: PodModel[];
 
   /**
-   * Provides the last data refresh time
-   */
-  public lastRefreshSeconds: number;
-
-  /**
    * Indicates when component tried to refresh data
    */
   public isLoading: boolean;
+
+  /**
+   * Provides the current state of container
+   */
+  public currentContainerState: ContainerState = ContainerState.MAXIMUM;
+
+  /**
+   * Provides the type of container state
+   */
+  public containerState = ContainerState;
 
   /**
    * Indicates when all pods has a ready state
@@ -62,6 +67,22 @@ export class PodStatusWidgetComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Gets the message of minimal widget state
+   */
+  public get messageForMinimalState(): string {
+    if (isNullOrUndefined(this.pods) || this.pods.length === 0) {
+      return "No records found"
+    }
+
+    if (this.isAllPodsReady) {
+      return "Running " + this.pods.length;
+    }
+
+    let count: number = this.pods.filter(pod => !pod.ready).length;
+    return "Not ready " + count + " of " + this.pods.length;
+  }
+
+  /**
    * Initialize new instance of PodStatusWidgetComponent
    *
    * @param podListService - the PodListService instance
@@ -71,15 +92,21 @@ export class PodStatusWidgetComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this._windowHeight = window.innerHeight;
-    this.lastRefreshSeconds = 0;
     this.refreshData();
     this._updateInterval = setInterval(() => { this.refreshData(); }, 15000);
-    this._lastUpdateSecondsInterval = setInterval(() => { this.lastRefreshSeconds++; }, 1000);
   }
 
   public ngOnDestroy(): void {
     clearInterval(this._updateInterval);
-    clearInterval(this._lastUpdateSecondsInterval);
+  }
+
+  /**
+   * Handles the changing of container state
+   *
+   * @param state - the new state of component
+   */
+  public onStateChanged(state: ContainerState): void {
+    this.currentContainerState = state;
   }
 
   private refreshData(): void {
@@ -87,13 +114,11 @@ export class PodStatusWidgetComponent implements OnInit, OnDestroy {
     this.podListService.retrievePods(this.namespace, true).then(
       pods => {
         this.pods = pods;
-        this.lastRefreshSeconds = 0;
         this.isLoading = false;
       },
       err => {
         console.error(err);
         this.pods = [];
-        this.lastRefreshSeconds = 0;
         this.isLoading = false;
       }
     );

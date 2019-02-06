@@ -1,6 +1,39 @@
 @import "../../../styles/widget-header";
+@import "../../../styles/common";
+@import "../../../styles/animation-pulse";
 
-.active-builds {
+.builds-minimal-container {
+  border: 1px solid $primaryDark;
+  border-radius: 5px;
+  width: $tileWidth + $marginSmall * 2 + 2px; // 2px is border
+
+  .header {
+    @extend .minimum-widget-header;
+    justify-content: space-between;
+  }
+
+  .tile:hover {
+    cursor: pointer;
+  }
+
+  .in-progress {
+    animation: 2s ease infinite pulse;
+  }
+
+  .neutral {
+    background: $colorGray;
+  }
+
+  .failed {
+    background: $red;
+  }
+
+  .successful {
+    background: $lightGreen;
+  }
+}
+
+.builds-maximum-container {
   width: 100%;
   min-width: 700px;
   border: 1px solid $primaryDark;
@@ -9,6 +42,7 @@
 
   .header {
     @extend .widget-header;
+    justify-content: space-between;
   }
 
   .active-build-items {

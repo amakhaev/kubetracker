@@ -3,6 +3,7 @@ import {RetrieveStrategy} from "./builds-widget/retrieve-strategy";
 import {ActiveBuildsRetrieveStrategy} from "./builds-widget/active-builds-retrieve-strategy";
 import {JenkinsJobsService} from "../shared/services/jenkins-jobs.service";
 import {LastBuildsRetrieveStrategy} from "./builds-widget/last-builds-retrieve-strategy";
+import {BuildsWidgetData} from "./builds-widget/builds-widget-data";
 
 /**
  * Provides the dashboard component
@@ -25,6 +26,16 @@ export class DashboardComponent {
   public lastBuildsRetrieveStrategy: RetrieveStrategy;
 
   /**
+   * Provides the data for active builds
+   */
+  public activeBuildsWidgetData: BuildsWidgetData;
+
+  /**
+   * Provides the data for last builds
+   */
+  public lastBuildsWidgetData: BuildsWidgetData;
+
+  /**
    * Initialize new instance of DashboardComponent
    *
    * @param jenkinsJobService - the JenkinsJobsService instance
@@ -32,5 +43,7 @@ export class DashboardComponent {
   constructor(private jenkinsJobService: JenkinsJobsService) {
     this.activeBuildsRetrieveStrategy = new ActiveBuildsRetrieveStrategy(jenkinsJobService);
     this.lastBuildsRetrieveStrategy = new LastBuildsRetrieveStrategy(jenkinsJobService);
+    this.activeBuildsWidgetData = new BuildsWidgetData("active_builds");
+    this.lastBuildsWidgetData = new BuildsWidgetData("last_builds");
   }
 }

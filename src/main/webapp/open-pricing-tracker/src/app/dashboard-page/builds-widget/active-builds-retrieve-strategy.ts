@@ -16,17 +16,11 @@ export class ActiveBuildsRetrieveStrategy implements RetrieveStrategy {
   }
 
   /**
-   * Gets the title of strategy
-   */
-  public getTitle(): string {
-    return "Active builds";
-  }
-
-  /**
    * Retrieves the jenkins build results
    */
   public retrieveBuilds(): Promise<JenkinsJobModel[]> {
     return this.jenkinsJobService.retrieveActiveBuildJobs();
   }
+
 
 }

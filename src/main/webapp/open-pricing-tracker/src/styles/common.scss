@@ -7,3 +7,22 @@
 .vertical-divider {
   margin-right: $marginNormal;
 }
+
+.tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $colorGray;
+  width: $tileWidth;
+  height: $tileHeight;
+  margin: $marginSmall;
+
+  label {
+    font-size: $fontSizeLarge;
+    font-weight: $font-weight-bold;
+  }
+
+  label:hover {
+    cursor: pointer;
+  }
+}

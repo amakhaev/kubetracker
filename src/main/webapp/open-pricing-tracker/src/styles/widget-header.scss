@@ -17,3 +17,12 @@
     text-transform: capitalize;
   }
 }
+
+.minimum-widget-header {
+  @extend .widget-header;
+  height: 30px;
+
+  .title {
+    font-size: $fontSizeNormal;
+  }
+}

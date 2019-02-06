@@ -1,28 +1,48 @@
-<div class="pod-status-widget">
+<ng-container *ngIf="currentContainerState === containerState.MAXIMUM; then maximumState; else minimumState"></ng-container>
 
-  <div class="header">
-    <label class="title">{{namespace}}</label>
-    <div class="actions">
-      <p-progressSpinner *ngIf="isLoading"
-                         [style]="{width: '20px', height: '20px'}"
-                         animationDuration=".5s">
-      </p-progressSpinner>
-      <span *ngIf="pods" class="title">{{lastRefreshSeconds}}s</span>
-      <div class="circle" [ngClass]="{'circle-green': isAllPodsReady, 'circle-red': !isAllPodsReady}"></div>
+<ng-template #minimumState>
+  <div class="minimum-pod-status-widget">
+    <div class="minimum-header">
+      <label class="title">{{namespace}}</label>
+      <div class="actions">
+        <container-size [state]="currentContainerState" (onStateChanged)="onStateChanged($event)"></container-size>
+      </div>
+    </div>
+
+    <div class="tile"
+         [ngClass]="{'success': isAllPodsReady, 'failed': !isAllPodsReady}"
+         (click)="onStateChanged(containerState.MAXIMUM)">
+      <label>{{messageForMinimalState}}</label>
     </div>
   </div>
+</ng-template>
 
-  <div class="pod-items">
-    <p-scrollPanel [style]="{width: '100%', height: componentHeight + 'px'}">
-      <p-dataView #dv [value]="pods" [paginator]="false" [lazy]="true">
+<ng-template #maximumState>
+  <div class="maximum-pod-status-widget">
+    <div class="maximum-header">
+      <label class="title">{{namespace}}</label>
+      <div class="actions">
+        <p-progressSpinner *ngIf="isLoading"
+                           [style]="{width: '20px', height: '20px'}"
+                           animationDuration="1s">
+        </p-progressSpinner>
+        <container-size [state]="currentContainerState" (onStateChanged)="onStateChanged($event)"></container-size>
+        <div class="circle" [ngClass]="{'circle-green': isAllPodsReady, 'circle-red': !isAllPodsReady}"></div>
+      </div>
+    </div>
 
-        <ng-template let-pod pTemplate="listItem">
-          <div>
-            <pod-item [item]="pod"></pod-item>
-          </div>
-        </ng-template>
+    <div class="pod-items">
+      <p-scrollPanel [style]="{width: '100%', height: componentHeight + 'px'}">
+        <p-dataView #dv [value]="pods" [paginator]="false" [lazy]="true">
 
-      </p-dataView>
-    </p-scrollPanel>
+          <ng-template let-pod pTemplate="listItem">
+            <div>
+              <pod-item [item]="pod"></pod-item>
+            </div>
+          </ng-template>
+
+        </p-dataView>
+      </p-scrollPanel>
+    </div>
   </div>
-</div>
+</ng-template>
