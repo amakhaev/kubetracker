@@ -175,7 +175,7 @@ public class JenkinsServiceImpl implements JenkinsService {
         JobWithDetails jobWithDetails;
         try {
             JenkinsServer jenkinsServer = new JenkinsServer(
-                    new URI(url), settingsModel.getFullName(), settingsModel.getJenkinsApiToken()
+                    new URI(url), settingsModel.getJenkinsName(), settingsModel.getJenkinsApiToken()
             );
             jobWithDetails = jenkinsServer.getJob(UI_TEST_JOB_NAME);
         } catch (HttpResponseException e) {
@@ -222,7 +222,7 @@ public class JenkinsServiceImpl implements JenkinsService {
         SettingsModel settingsModel = this.settingService.getSettings();
         List<Callable<JenkinsJobModel>> tasks = new ArrayList<>();
         JenkinsServer jenkinsServer = new JenkinsServer(
-                new URI(this.planFolderUrl), settingsModel.getFullName(), settingsModel.getJenkinsApiToken()
+                new URI(this.planFolderUrl), settingsModel.getJenkinsName(), settingsModel.getJenkinsApiToken()
         );
 
         log.info("Create callable tasks for {} folder", JenkinsFolder.PLAN);
@@ -233,7 +233,7 @@ public class JenkinsServiceImpl implements JenkinsService {
         );
 
         jenkinsServer = new JenkinsServer(
-                new URI(this.odsPipelineFolderUrl), settingsModel.getFullName(), settingsModel.getJenkinsApiToken()
+                new URI(this.odsPipelineFolderUrl), settingsModel.getJenkinsName(), settingsModel.getJenkinsApiToken()
         );
 
         log.info("Create callable tasks for {} folder", JenkinsFolder.ODS_PIPELINE);

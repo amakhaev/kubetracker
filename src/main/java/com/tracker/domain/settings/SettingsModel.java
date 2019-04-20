@@ -1,6 +1,7 @@
 package com.tracker.domain.settings;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -11,9 +12,8 @@ import lombok.Setter;
 public class SettingsModel {
 
     private int id;
-    private String fullName;
-    private String shortName;
+    private String kubernetesName;
+    private String jenkinsName;
     private String password;
     private String jenkinsApiToken;
-
 }

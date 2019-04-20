@@ -8,10 +8,10 @@ export class SettingsModel {
   public id: number;
 
   @autoserialize
-  public fullName: string;
+  public kubernetesName: string;
 
   @autoserialize
-  public shortName: string;
+  public jenkinsName: string;
 
   @autoserialize
   public password: string;
