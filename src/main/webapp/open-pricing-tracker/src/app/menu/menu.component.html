@@ -1,16 +1,18 @@
 <div class="tracker-menu">
 
-  <p-sidebar [style]="{width:'100px'}"
-             [visible]="true"
-             [modal]="false"
-             [baseZIndex]="10000"
-             [showCloseIcon]="false">
-    <div class="navigation">
-      <a (click)="onDashboardClick()" ><i class="pi pi-th-large"></i></a>
-      <a (click)="onFilterClick()"><i class="pi pi-filter"></i></a>
-      <a (click)="onSettingsClick()"><i class="pi pi-cog"></i></a>
-      <a (click)="onInfoClick()"><i class="pi pi-info"></i></a>
-    </div>
-  </p-sidebar>
+  <div class="sidebar-container" (mouseenter)="onMouseEnter($event)" (mouseleave)="onMouseLeave($event)">
+    <p-sidebar [style]="{width:'100px'}"
+                [visible]="showSidebar"
+                [modal]="false"
+                [baseZIndex]="10000"
+                [showCloseIcon]="false">
+      <div class="navigation">
+        <a (click)="onDashboardClick()" ><i class="pi pi-th-large"></i></a>
+        <a (click)="onFilterClick()"><i class="pi pi-filter"></i></a>
+        <a (click)="onSettingsClick()"><i class="pi pi-cog"></i></a>
+        <a (click)="onInfoClick()"><i class="pi pi-info"></i></a>
+      </div>
+    </p-sidebar>
+  </div>
 
 </div>

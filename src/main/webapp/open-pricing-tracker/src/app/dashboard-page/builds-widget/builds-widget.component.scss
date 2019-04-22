@@ -34,7 +34,7 @@
 }
 
 .builds-maximum-container {
-  width: 100%;
+  max-width: 700px;
   min-width: 700px;
   border: 1px solid $primaryDark;
   border-radius: 5px;

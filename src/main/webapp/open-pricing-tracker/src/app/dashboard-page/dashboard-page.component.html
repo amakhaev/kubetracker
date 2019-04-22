@@ -1,17 +1,16 @@
 <div class="dashboard">
-  <div class="pods-widget-container">
-    <pod-status-widget [namespace]="'dev'"></pod-status-widget>
-    <div class="horizontal-divider"></div>
-    <pod-status-widget [namespace]="'qa'"></pod-status-widget>
-  </div>
-  <div>
+  <div class="widget-container">
     <ui-test-widget [environment]="'dev'"></ui-test-widget>
-    <div class="horizontal-divider"></div>
-    <ui-test-widget [environment]="'qa'"></ui-test-widget>
-  </div>
-  <div class="active-build-widget-container">
     <active-builds [retrieveStrategy]="activeBuildsRetrieveStrategy" [widgetData]="activeBuildsWidgetData"></active-builds>
-    <div class="horizontal-divider"></div>
+  </div>
+
+  <div class="widget-container">
+    <ui-test-widget [environment]="'qa'"></ui-test-widget>
     <active-builds [retrieveStrategy]="lastBuildsRetrieveStrategy" [widgetData]="lastBuildsWidgetData"></active-builds>
+  </div>
+
+  <div class="widget-container">
+    <pod-status-widget [namespace]="'dev'"></pod-status-widget>
+    <pod-status-widget [namespace]="'qa'"></pod-status-widget>
   </div>
 </div>

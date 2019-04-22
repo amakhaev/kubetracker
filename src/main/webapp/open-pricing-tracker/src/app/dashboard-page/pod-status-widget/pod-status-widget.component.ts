@@ -40,7 +40,7 @@ export class PodStatusWidgetComponent implements OnInit, OnDestroy {
   /**
    * Provides the current state of container
    */
-  public currentContainerState: ContainerState = ContainerState.MAXIMUM;
+  public currentContainerState: ContainerState = ContainerState.MINIMAL;
 
   /**
    * Provides the type of container state
