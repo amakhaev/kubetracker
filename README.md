@@ -9,6 +9,7 @@
   > .read ./src/main/resources/db/v1.0.sql
   > .read ./src/main/resources/db/v1.1.sql
   > .read ./src/main/resources/db/v1.3.sql
+  > .read ./src/main/resources/db/v1.4.sql
   ```
 * Add config file to the `resources` folder
   * Create file `application.yml`
@@ -29,7 +30,7 @@
     qa_e2e_test_url: <url>
     plan_folder_url: <url>
   server: 
-    port: 6547
+    port: 6545
   ```
 #### Build & Run
 

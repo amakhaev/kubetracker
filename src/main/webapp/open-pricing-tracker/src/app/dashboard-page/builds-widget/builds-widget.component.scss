@@ -34,8 +34,8 @@
 }
 
 .builds-maximum-container {
-  max-width: 700px;
-  min-width: 700px;
+  max-width: $widgetSize;
+  min-width: $widgetSize;
   border: 1px solid $primaryDark;
   border-radius: 5px;
   margin-bottom: $marginNormal;

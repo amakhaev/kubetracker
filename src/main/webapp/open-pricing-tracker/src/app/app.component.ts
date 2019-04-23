@@ -17,8 +17,8 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     setInterval(() => {
       this.timeToShowImage = true;
-      this.randomImageApiUrl = '../assets/images/' + (Math.floor(Math.random() * 10) + 1) + '.jpg';
-      setTimeout(() => this.timeToShowImage = false, 180000);
-    }, 18180000);
+      this.randomImageApiUrl = '../assets/images/' + (Math.floor(Math.random() * 11) + 1) + '.jpg';
+      setTimeout(() => this.timeToShowImage = false, 3000);
+    }, 18003000);
   }
 }

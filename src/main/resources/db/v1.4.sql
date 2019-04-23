@@ -5,7 +5,7 @@ CREATE TABLE settings (
   kubernetes_name NOT NULL UNIQUE,
   jenkins_name NOT NULL UNIQUE,
   password NOT NULL UNIQUE,
-  jenkins_api_token VARCHAR(256)
+  jenkins_api_token NOT NULL UNIQUE VARCHAR(256)
 );
 
 INSERT INTO settings (kubernetes_name, jenkins_name, password)
