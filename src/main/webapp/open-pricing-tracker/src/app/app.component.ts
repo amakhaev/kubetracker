@@ -7,8 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AppComponent implements OnInit {
 
-  public randomImageApiUrl: String;
-  public timeToShowImage: Boolean;
+  public randomImageApiUrl: string;
+  public timeToShowImage: boolean;
 
   constructor() {
     this.timeToShowImage = false;

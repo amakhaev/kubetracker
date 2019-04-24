@@ -47,11 +47,17 @@ export class MenuComponent {
     this.router.navigate([environment.navigation.filters]);
   }
 
-  public onMouseEnter() {
+  /**
+   * Handles mouse entry on the sidebar
+   */
+  public onMouseEnter(event: any) {
     this.showSidebar = true;
   }
 
-  public onMouseLeave() {
+  /**
+   * Handles mouse leaving sidebar
+   */
+  public onMouseLeave(event: any) {
     this.showSidebar = false;
   }
 }
