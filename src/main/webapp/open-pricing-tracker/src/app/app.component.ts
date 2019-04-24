@@ -19,6 +19,6 @@ export class AppComponent implements OnInit {
       this.timeToShowImage = true;
       this.randomImageApiUrl = '../assets/images/' + (Math.floor(Math.random() * 11) + 1) + '.jpg';
       setTimeout(() => this.timeToShowImage = false, 3000);
-    }, 18003000);
+    }, 3603000);
   }
 }
