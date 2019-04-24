@@ -5,6 +5,7 @@ $pageWidth: 500px;
 
 .settings-page {
   margin: $marginNormal;
+  margin-left: $sidebarSize;
   width: $pageWidth;
 
   h1 {

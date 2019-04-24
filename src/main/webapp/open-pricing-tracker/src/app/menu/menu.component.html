@@ -1,6 +1,6 @@
 <div class="tracker-menu">
 
-  <div class="sidebar-container" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
+  <div class="sidebar-container" (mouseenter)="onMouseEnter($event)" (mouseleave)="onMouseLeave($event)">
     <p-sidebar [style]="{width:'100px'}"
                 [visible]="showSidebar"
                 [modal]="false"

@@ -44,3 +44,4 @@ src/main/webapp/src/**/*.js
 src/main/webapp/open-pricing-tracker/npm-debug.log*
 src/main/webapp/open-pricing-tracker/coverage
 src/main/webapp/open-pricing-tracker/e2e
+src/main/resources/static/
