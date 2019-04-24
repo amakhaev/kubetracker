@@ -9,6 +9,8 @@ import { environment } from '../../environments/environment';
 })
 export class MenuComponent {
 
+  public showSidebar: Boolean = false;
+
   /**
    * Initialize new instance of MenuComponent
    *
@@ -45,4 +47,17 @@ export class MenuComponent {
     this.router.navigate([environment.navigation.filters]);
   }
 
+  /**
+   * Handles mouse entry on the sidebar
+   */
+  public onMouseEnter(event: any) {
+    this.showSidebar = true;
+  }
+
+  /**
+   * Handles mouse leaving sidebar
+   */
+  public onMouseLeave(event: any) {
+    this.showSidebar = false;
+  }
 }

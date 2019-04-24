@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  baseApiUrl: "http://10.0.9.105:6547/kubetracker",
+  baseApiUrl: "http://kintaro.rp.ru:6545/kubetracker",
 
   urls: {
     settings: "/settings",
@@ -15,6 +15,6 @@ export const environment = {
     dashboard: "/dashboard",
     settings: "/settings",
     filters: "/filters",
-    swagger: "http://10.0.9.105:6547/swagger-ui.html"
+    swagger: "http://kintaro.rp.ru:6545/swagger-ui.html"
   }
 };

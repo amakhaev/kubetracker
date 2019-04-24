@@ -21,12 +21,12 @@ public class SettingsEntity {
     /**
      * Provides the full name field name.
      */
-    public static final String FULL_NAME_FIELD = "full_name";
+    public static final String KUBERNETES_NAME = "kubernetes_name";
 
     /**
      * Provides the short name field name.
      */
-    public static final String SHORT_NAME_FIELD = "short_name";
+    public static final String JENKINS_NAME = "jenkins_name";
 
     /**
      * Provides the password field name.
@@ -41,11 +41,11 @@ public class SettingsEntity {
     @DatabaseField(columnName = ID_FIELD, generatedId = true)
     private int id;
 
-    @DatabaseField(columnName = FULL_NAME_FIELD)
-    private String fullName;
+    @DatabaseField(columnName = KUBERNETES_NAME)
+    private String kubernetesName;
 
-    @DatabaseField(columnName = SHORT_NAME_FIELD)
-    private String shortName;
+    @DatabaseField(columnName = JENKINS_NAME)
+    private String jenkinsName;
 
     @DatabaseField(columnName = PASSWORD_FIELD)
     private String password;

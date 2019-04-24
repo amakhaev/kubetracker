@@ -11,8 +11,8 @@ import lombok.Setter;
 public class ReadSettingsDto {
 
     private int id;
-    private String fullName;
-    private String shortName;
+    private String kubernetesName;
+    private String jenkinsName;
     private String jenkinsApiToken;
 
 }

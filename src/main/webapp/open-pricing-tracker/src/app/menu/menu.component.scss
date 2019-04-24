@@ -24,3 +24,10 @@
     }
   }
 }
+
+.sidebar-container {
+  width: $sidebarSize;
+  height: 100%;
+  position: absolute;
+  z-index: 10001;
+}

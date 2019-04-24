@@ -4,7 +4,15 @@
 .dashboard {
   display: flex;
 
-  .pods-widget-container, .active-build-widget-container {
+  .widget-container {
     margin-right: $marginNormal;
   }
+
+  ui-test-widget::ng-deep .ui-test-content {
+    margin-bottom: $marginNormal;
+  }
+
+  pod-status-widget::ng-deep > div {
+    margin-bottom: $marginNormal;
+  } 
 }
